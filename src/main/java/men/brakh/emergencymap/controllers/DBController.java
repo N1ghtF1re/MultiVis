@@ -2,6 +2,7 @@ package men.brakh.emergencymap.controllers;
 
 import men.brakh.emergencymap.db.Emergencies;
 import men.brakh.emergencymap.db.EmergenciesRepository;
+import men.brakh.emergencymap.models.RegionsList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class DBController {
         n.setRegion(region);
         n.setSituation(situation);
 
-        SimpleDateFormat sdf1 = new SimpleDateFormat("MM-dd-yyyy");
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date date = null;
         try {
             date = sdf1.parse(strDate);
@@ -56,5 +57,25 @@ public class DBController {
         }
 
         return emergenciesRepository.findByRegion(region);
+    }
+
+    @RequestMapping("/date")
+    public @ResponseBody Iterable<Emergencies> getByDateRange(@RequestParam String startDateStr, @RequestParam String endDateStr) {
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date startDate = null;
+        java.util.Date endDate = null;
+        try {
+            startDate = sdf1.parse(startDateStr);
+            endDate = sdf1.parse(endDateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
+        java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
+
+        RegionsList regionsList = new RegionsList(19, sqlStartDate, sqlEndDate, emergenciesRepository);
+
+
+        return emergenciesRepository.findByDateRange(sqlStartDate, sqlEndDate);
     }
 }
