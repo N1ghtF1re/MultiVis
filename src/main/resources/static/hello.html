@@ -27,14 +27,14 @@
 
 <script>
 
-    ShowCity('Минская область', '#000', 'kek')
+    ShowCity('Минская область', '#009008', 'kek')
 
 </script>
 
 <script>
-
+    var kek;
     function makeRequest() {
-        var kek;
+
         var arr = { City: 'Moscow', Age: 25 };
         $.ajax({
             url: "/api",
@@ -42,7 +42,13 @@
             data: 'json='+JSON.stringify(arr),
             async: false,
             success: function(msg) {
-                alert(msg);
+                cities = JSON.parse(msg);
+                for(let i = 0; i < cities.length; i++) {
+                    console.log(cities[i]['name']);
+                    ShowCity(cities[i]['name'], cities[i]['color'], 'None')
+                }
+                kek = msg;
+                console.log(msg);
             },
             error: function(msg) {
                 kek = msg;
@@ -50,6 +56,7 @@
             }
         });
     }
+    makeRequest();
 
 </script>
 </body>

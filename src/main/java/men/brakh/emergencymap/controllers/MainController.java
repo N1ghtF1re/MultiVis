@@ -1,11 +1,16 @@
 package men.brakh.emergencymap.controllers;
 
+import com.google.gson.Gson;
+import men.brakh.emergencymap.models.City;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -18,10 +23,13 @@ public class MainController {
   @RequestMapping(value="/api", method=RequestMethod.POST)
   public @ResponseBody
   ResponseEntity<String> add(String json) {
+    Gson gson = new Gson();
+    List<City> cities = new ArrayList<>();
+    cities.add(new City("Брестская область", "#F0A"));
+    cities.add(new City("Витебская область", "#AAA"));
+    String resultJson = gson.toJson(cities);
 
-    System.out.println("SS");
-
-    return new ResponseEntity<>("EEEEEEEEE", HttpStatus.OK);
+    return new ResponseEntity<>(resultJson, HttpStatus.OK);
   }
 
   @RequestMapping("/api")
