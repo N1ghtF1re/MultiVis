@@ -18,18 +18,24 @@ public class Color {
         this.rgb = rgb;
         hex = rgb2Hex(rgb);
     }
+    public Color(Color color) {
+        this.rgb = color.rgb;
+        this.hex = color.hex;
+    }
 
     public int[] getRgb() {
         return rgb;
     }
 
-    public void ligherColor(byte percent) {
-        if (percent < 0) return;
+    public Color ligherColor(int percent) {
+        if (percent < 0) return this;
         if (percent > 100) percent = 100;
 
         for(int i = 0; i < rgb.length; i++) {
             rgb[i] = rgb[i] + Math.round((255 - rgb[i]) * percent/100);
         }
+
+        return this;
     }
 
 

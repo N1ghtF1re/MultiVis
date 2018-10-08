@@ -1,14 +1,21 @@
 package men.brakh.emergencymap.models;
 
-public class City {
+public class Region {
     private String name;
-    private String color;
+    private Color color;
     private int[] sits;
 
-    public City(String name, String color) {
+    public Region(String name, Color color, int n) {
         this.name = name;
         this.color = color;
+        this.sits = new int[n];
     }
+
+    public Region(String name, int n) {
+        this.name = name;
+        this.sits = new int[n];
+    }
+
 
     public String getName() {
         return name;
@@ -18,11 +25,11 @@ public class City {
         this.name = name;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
@@ -32,5 +39,17 @@ public class City {
 
     public void setSits(int[] sits) {
         this.sits = sits;
+    }
+
+    public void incSituation(int index) {
+        sits[index]++;
+    }
+
+    public int getSitRepeats(int index) {
+        return sits[index];
+    }
+
+    public Boolean equals(Region region1, Region region2) {
+        return(region1.getName().equals(region2.getName()));
     }
 }

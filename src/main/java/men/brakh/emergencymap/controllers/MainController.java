@@ -1,7 +1,7 @@
 package men.brakh.emergencymap.controllers;
 
 import com.google.gson.Gson;
-import men.brakh.emergencymap.models.City;
+import men.brakh.emergencymap.models.Region;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,9 +24,9 @@ public class MainController {
   public @ResponseBody
   ResponseEntity<String> add(String json) {
     Gson gson = new Gson();
-    List<City> cities = new ArrayList<>();
-    cities.add(new City("Брестская область", "#F0A"));
-    cities.add(new City("Витебская область", "#AAA"));
+    List<Region> cities = new ArrayList<>();
+    //cities.add(new Region("Брестская область", "#F0A"));
+    //cities.add(new Region("Витебская область", "#AAA"));
     String resultJson = gson.toJson(cities);
 
     return new ResponseEntity<>(resultJson, HttpStatus.OK);
