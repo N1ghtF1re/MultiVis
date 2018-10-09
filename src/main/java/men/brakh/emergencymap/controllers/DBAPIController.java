@@ -3,6 +3,8 @@ package men.brakh.emergencymap.controllers;
 import com.google.gson.Gson;
 import men.brakh.emergencymap.db.Emergencies;
 import men.brakh.emergencymap.db.EmergenciesRepository;
+import men.brakh.emergencymap.db.Situations;
+import men.brakh.emergencymap.db.SituationsRepository;
 import men.brakh.emergencymap.models.Region;
 import men.brakh.emergencymap.models.RegionsList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ import java.util.List;
 public class DBAPIController {
     @Autowired
     private EmergenciesRepository emergenciesRepository;
+
+    @Autowired
+    private SituationsRepository situationsRepository;
 
     final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -137,5 +142,15 @@ public class DBAPIController {
         java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
 
         return emergenciesRepository.findByDateRange(sqlStartDate, sqlEndDate);
+    }
+
+
+    /**
+     * Возвращает список ситуаций (id, название)
+     * @return JSON списска ситуаций [{"id": 1", "name": "..."}, ...]
+     */
+    @RequestMapping("/sitsList")
+    public @ResponseBody Iterable<Situations> getSitsList() {
+        return situationsRepository.findAll();
     }
 }
