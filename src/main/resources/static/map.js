@@ -32,6 +32,7 @@ function ShowCity(Region, color, desc) {
             $.each(data, function(ix, place) {
                 if ("relation" == place.osm_type) {
                     // Создаем полигон с нужными координатами
+                    console.log(place.geojson.coordinates == undefined)
                     if ((place.geojson.coordinates[1] == undefined) || ( place.geojson.coordinates[1][1] !=  undefined)) {
                         console.log(place.geojson.coordinates)
                         var p = new ymaps.Polygon(place.geojson.coordinates, {
