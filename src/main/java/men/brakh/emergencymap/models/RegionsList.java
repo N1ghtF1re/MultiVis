@@ -5,6 +5,7 @@ import men.brakh.emergencymap.db.Emergencies;
 import men.brakh.emergencymap.db.EmergenciesRepository;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class RegionsList {
@@ -12,7 +13,7 @@ public class RegionsList {
     private Date startDate;
     private Date endDate;
 
-    LinkedList<Region> regionsList = new LinkedList<>();
+    ArrayList<Region> regionsList = new ArrayList<>();
 
     private EmergenciesRepository emergenciesRepository;
 
@@ -71,12 +72,16 @@ public class RegionsList {
     }
 
     public Color getRegionColor(int[] regionSits, Color[] basicColors, int[] maxArr) {
-        Color[] colorMap = new Color[n];
+        LinkedList<Color> colors= new LinkedList<>();
         for (int i = 0; i < n; i++) {
             if (regionSits[i] != 0) {
-                int coef = Math.round( 100 - ( regionSits[i]  / maxArr[i] ) * 100 ); // Получаем коэффициент как процент от максимального значенмй
-                colorMap[i] = new Color(basicColors[i]).ligherColor(coef); // Осветляем коэффициент на coef %
+                int coef = Math.round( 100 - ( (float) regionSits[i]  / (float) maxArr[i] ) * 100 ); // Получаем коэффициент как процент от максимального значенмй
+                colors.add(new Color(basicColors[i]).ligherColor(coef)); // Осветляем коэффициент на coef %
             }
+        }
+        Color[] colorMap = new Color[colors.size()];
+        for(int i = 0; i < colorMap.length; i++) {
+            colorMap[i] = colors.get(i);
         }
         return Color.mixColors(colorMap);
     }
@@ -87,9 +92,14 @@ public class RegionsList {
         for(int i = 0; i < regionsList.size(); i++) {
             Region currRegion = regionsList.get(i);
             int[] regionSits = currRegion.getSits();
-            currRegion.setColor(getRegionColor(regionSits, basicColors, maxArr));
+            String regionColor = getRegionColor(regionSits, basicColors, maxArr).getHex();
+            currRegion.setColor(regionColor);
             regionsList.set(i, currRegion);
         }
+    }
+
+    public ArrayList<Region> getList() {
+        return regionsList;
     }
 
 }

@@ -44,11 +44,9 @@
             success: function(msg) {
                 cities = JSON.parse(msg);
                 for(let i = 0; i < cities.length; i++) {
-                    console.log(cities[i]['name']);
-                    ShowCity(cities[i]['name'], cities[i]['color'], 'None')
+                    ShowCity(cities[i]['name'], cities[i]['color'], cities[i]['color'])
                 }
                 kek = msg;
-                console.log(msg);
             },
             error: function(msg) {
                 kek = msg;

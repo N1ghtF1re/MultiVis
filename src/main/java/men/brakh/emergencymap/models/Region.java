@@ -2,10 +2,10 @@ package men.brakh.emergencymap.models;
 
 public class Region {
     private String name;
-    private Color color;
+    private String color;
     private int[] sits;
 
-    public Region(String name, Color color, int n) {
+    public Region(String name, String color, int n) {
         this.name = name;
         this.color = color;
         this.sits = new int[n];
@@ -25,11 +25,11 @@ public class Region {
         this.name = name;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
