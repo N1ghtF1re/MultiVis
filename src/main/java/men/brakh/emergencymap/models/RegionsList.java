@@ -2,6 +2,8 @@ package men.brakh.emergencymap.models;
 
 import men.brakh.emergencymap.db.Emergencies;
 import men.brakh.emergencymap.db.EmergenciesRepository;
+import men.brakh.emergencymap.сoefficientsСalculators.CoefficientsСalculators;
+import men.brakh.emergencymap.сoefficientsСalculators.impl.BasicCoefficientsСalculators;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -114,19 +116,23 @@ public class RegionsList {
     /**
      * Получаем цвет определенного региона (Цвет i-го региона получается путем осветление его базового цвета на процент,
      * на который он отличается от максимального показателя для этого региона)
-     * @param regionSits Массив повторений ситуаций региона ((i-1)-ый элемент - количество повторений i-ой ситуации)
+     * @param region Объект региона
      * @param basicColors Базовые цвета ситуаций (при максимальном числе повторений ситуации)
      * @see Color#getBasicColors(int)
      * @param maxArr - Массив максимальных значений повторений ситуаций
      * @see RegionsList#getMaxArr()
+     * @param coefficientsСalculators Объект для расчета коэффициента ответления цвета ситуации
+     * @see CoefficientsСalculators
      * @return Объект результирующего цвета
      */
-    public Color getRegionColor(int[] regionSits, Color[] basicColors, int[] maxArr) {
+    public Color getRegionColor(Region region, Color[] basicColors, int[] maxArr, CoefficientsСalculators coefficientsСalculators) {
+        int[] regionSits = region.getSits();
+
         LinkedList<Color> colors= new LinkedList<>();
         for (int i = 0; i < n; i++) {
             if (regionSits[i] != 0) {
                 // Получаем коэффициент "осветления"
-                int coef = Math.round( 100 - ( (float) regionSits[i]  / (float) maxArr[i] ) * 100 );
+                int coef = coefficientsСalculators.calc(region, maxArr, i);
                 // Осветляем коэффициент на coef% и заносим в список
                 colors.add(new Color(basicColors[i]).ligherColor(coef));
             }
@@ -149,11 +155,13 @@ public class RegionsList {
         int[] maxArr = getMaxArr(); // Получаем массив максимальных повторений ситуаций
         Color[] basicColors = Color.getBasicColors(n); // Получаем базовый цвета ситуаций
 
+        CoefficientsСalculators coefficientsСalculators = new BasicCoefficientsСalculators();
+
         for(int i = 0; i < regionsList.size(); i++) {
             Region currRegion = regionsList.get(i);
-            int[] regionSits = currRegion.getSits();
+
             // Получаем цвет конкретного региона:
-            String regionColor = getRegionColor(regionSits, basicColors, maxArr).getHex();
+            String regionColor = getRegionColor(currRegion, basicColors, maxArr, coefficientsСalculators).getHex();
             // Устанавливаем цвет для этого региона
             currRegion.setColor(regionColor);
             regionsList.set(i, currRegion);
