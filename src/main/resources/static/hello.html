@@ -34,9 +34,9 @@
     function makeRequest() {
         var arr = { City: 'Moscow', Age: 25 };
         $.ajax({
-            url: "/api",
+            url: "/api/regionsList",
             type: 'POST',
-            data: 'json='+JSON.stringify(arr),
+            data: 'startDate=2016-01-01&endDate=2017-01-01',
             async: false,
             success: function(msg) {
                 cities = JSON.parse(msg);

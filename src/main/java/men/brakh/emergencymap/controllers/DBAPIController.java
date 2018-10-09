@@ -1,8 +1,13 @@
 package men.brakh.emergencymap.controllers;
 
+import com.google.gson.Gson;
 import men.brakh.emergencymap.db.Emergencies;
 import men.brakh.emergencymap.db.EmergenciesRepository;
+import men.brakh.emergencymap.models.Region;
+import men.brakh.emergencymap.models.RegionsList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * Наброски API сервиса
@@ -22,6 +28,38 @@ public class DBAPIController {
     private EmergenciesRepository emergenciesRepository;
 
     final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+
+
+    /**
+     * Вовзращает JSON уже сформированного списка регионов с их результирующим цветом
+     * @param startDate Начальная дата диапазона в формате yyyy-MM-dd
+     * @param endDate Конечная дата диапазона в формате yyyy-MM-dd
+     * @return JSON уже сформированного списка регионов с их результирующим цветом
+     */
+    @RequestMapping("regionsList")
+    public @ResponseBody
+    ResponseEntity<String> getRegionsList(@RequestParam String startDate, @RequestParam String endDate) {
+
+        java.util.Date start = null;
+        java.util.Date end = null;
+        try {
+            start = sdf1.parse(startDate);
+            end = sdf1.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
+        java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
+
+        RegionsList regionsList = new RegionsList(19, sqlStartDate, sqlEndDate, emergenciesRepository);
+
+
+        Gson gson = new Gson();
+        List<Region> cities = regionsList.getList();
+        String resultJson = gson.toJson(cities);
+
+        return new ResponseEntity<>(resultJson, HttpStatus.OK);
+    }
 
     /**
      * Добавление элемента в базу данных по запросу на /api/add&region=REGION&situation=SITUATION&strDate=STRDATE
@@ -79,6 +117,8 @@ public class DBAPIController {
 
     /**
      * Возвращает все записи из базы данных за нужный диапазон дат по запросу на /api/date/start=DATE&end=&DATE
+     * Отличается от getRegionsList тем, что getRegionsList возвращает уже подготовленный список регионов с их
+     * цветом и тд, а getByDateRange - возвращает просто строки базы данных
      * @param start Начальная дата диапазона в формате yyyy-MM-dd
      * @param end Конечная дата диапазона в формате yyyy-MM-dd
      * @return Все записи из базы данных за нужный диапазон дат
