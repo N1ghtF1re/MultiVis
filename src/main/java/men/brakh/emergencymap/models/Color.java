@@ -1,25 +1,48 @@
 package men.brakh.emergencymap.models;
 
+/**
+ * Класс цветов
+ */
 public class Color {
-    private String hex;
-    private int[] rgb = new int[3];
+    private String hex; // HEX-представление цвета
+    private int[] rgb = new int[3]; // [0] => r, [1] => g, [2] => b
 
 
+    /**
+     * Создание цвета
+     * @param hex HEX-представление цвета
+     */
     public Color(String hex) {
         this.hex = hex;
-        rgb = hex2Rgb(hex);
+        rgb = hex2Rgb(hex); // Переводим в RGB
     }
 
+    /**
+     * Создание цвета
+     * @param r RED
+     * @param g GREEN
+     * @param b BLUE
+     */
     public Color(int r, int g, int b) {
         rgb = new int[] {r,g,b};
         hex = rgb2Hex(rgb);
     }
+
+    /**
+     * Создание цвета
+     * @param rgb Массив rgb ([0] => r, [1] => g, [2] => b)
+     */
     public Color(int[] rgb) {
         this.rgb[0] = rgb[0];
         this.rgb[1] = rgb[1];
         this.rgb[2] = rgb[2];
         hex = rgb2Hex(rgb);
     }
+
+    /**
+     * Создание копии цвета
+     * @param color Цвет, который надо скопировать
+     */
     public Color(Color color) {
         int[] myRgb = color.getRgb();
         this.rgb[0] = myRgb[0];
@@ -36,6 +59,11 @@ public class Color {
         return hex;
     }
 
+    /**
+     * Осветление цвета и возврат получившегося цвета
+     * @param percent Процент освтеления
+     * @return Получившийся цвет (this)
+     */
     public Color ligherColor(int percent) {
         if (percent < 0) return this;
         if (percent > 100) percent = 100;
@@ -48,6 +76,13 @@ public class Color {
     }
 
 
+    // СТАТИЧЕСКИЕ МЕТОДЫ ДЛЯ ЦВЕТОВ
+
+    /**
+     * Перевод из hex в RGB
+     * @param colorStr HEX представление в строке формата #NNNNNN
+     * @return Массив rgb ([0] => r, [1] => g, [2] => b)
+     */
     public static int[] hex2Rgb(String colorStr) {
         return new int[] {
                 Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
@@ -56,10 +91,20 @@ public class Color {
         };
     }
 
+    /**
+     * Перевод из rgb в hex
+     * @param rgb Массив rgb ([0] => r, [1] => g, [2] => b)
+     * @return HEX представления формата #NNNNNN
+     */
     public static String rgb2Hex(int[] rgb) {
         return String.format("#%02x%02x%02x", rgb[0], rgb[1], rgb[2]);
     }
 
+    /**
+     * Получение результирующего цвета путем смешания
+     * @param colors Массив цветов, учавствующих в смешании
+     * @return Результирующий цвет
+     */
     public static Color mixColors(Color[] colors) {
         int[] rgbSum = new int[] {0,0,0};
         for(int i = 0; i < colors.length; i++) {
@@ -75,7 +120,11 @@ public class Color {
         return new Color(rgbSum);
     }
 
-
+    /**
+     * Получение базовых цветов
+     * @param n Количество ситуаций
+     * @return Массив из базовых цветов
+     */
     public static Color[] getBasicColors(int n) {
         Color[] basicColors = new Color[n];
         int currIndex = 0;
