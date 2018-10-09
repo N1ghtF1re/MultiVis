@@ -15,11 +15,16 @@ public class Color {
         hex = rgb2Hex(rgb);
     }
     public Color(int[] rgb) {
-        this.rgb = rgb;
+        this.rgb[0] = rgb[0];
+        this.rgb[1] = rgb[1];
+        this.rgb[2] = rgb[2];
         hex = rgb2Hex(rgb);
     }
     public Color(Color color) {
-        this.rgb = color.rgb;
+        int[] myRgb = color.getRgb();
+        this.rgb[0] = myRgb[0];
+        this.rgb[1] = myRgb[1];
+        this.rgb[2] = myRgb[2];
         this.hex = color.hex;
     }
 
@@ -27,12 +32,16 @@ public class Color {
         return rgb;
     }
 
+    public String getHex() {
+        return hex;
+    }
+
     public Color ligherColor(int percent) {
         if (percent < 0) return this;
         if (percent > 100) percent = 100;
 
         for(int i = 0; i < rgb.length; i++) {
-            rgb[i] = rgb[i] + Math.round((255 - rgb[i]) * percent/100);
+            rgb[i] = rgb[i] + Math.round((255 - rgb[i]) * (float)percent/100);
         }
 
         return this;
