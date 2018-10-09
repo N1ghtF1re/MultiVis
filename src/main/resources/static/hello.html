@@ -34,11 +34,9 @@
 <script>
     var kek;
     ymaps.ready(function () {
-        makeRequest();
+        makeRequest(); // Когда карта прогрузится, делаем первый запрос
     });
     function makeRequest() {
-
-        var arr = { City: 'Moscow', Age: 25 };
         $.ajax({
             url: "/api",
             type: 'POST',
