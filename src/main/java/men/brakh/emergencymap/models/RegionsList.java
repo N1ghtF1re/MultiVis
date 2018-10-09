@@ -91,7 +91,7 @@ public class RegionsList {
      * (i-1)-ый элемент - максимальное число повторений ситуации
      * @return Массив из максимальных повторений i-ой ситуации
      */
-    private int[] getMaxArr() {
+    int[] getMaxArr() {
         if (regionsList.size() == 0) {
             return new int[n]; // Если список пустой, то число повторений каждой ситуации == 0
         }
