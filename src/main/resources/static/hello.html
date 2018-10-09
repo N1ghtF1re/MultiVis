@@ -25,11 +25,6 @@
 <body>
 <div id="map"></div>
 
-<script>
-
-    ShowCity('Минская область', '#009008', 'kek')
-
-</script>
 
 <script>
     var kek;
@@ -37,6 +32,7 @@
         makeRequest(); // Когда карта прогрузится, делаем первый запрос
     });
     function makeRequest() {
+        var arr = { City: 'Moscow', Age: 25 };
         $.ajax({
             url: "/api",
             type: 'POST',
