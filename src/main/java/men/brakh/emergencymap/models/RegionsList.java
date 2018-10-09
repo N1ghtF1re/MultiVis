@@ -79,6 +79,7 @@ public class RegionsList {
                 currRegion.incSituation(emergency.getSituation() - 1);
             }
         }
+        regionsList.add(currRegion); // Добавляем последний регион
     }
 
     /**
