@@ -58,6 +58,10 @@ public class RegionsList {
         // Получаем итерируемый объект со списком строк базы данных по запросу
         List<Emergencies> emergencies = getEmergenciesFromDB();
 
+        if(emergencies.size() == 0) {
+            return; // Если из базы данных ничего не вернули - просто выходим из инициализации
+        }
+
         // Получаем первую вернувшуюся строку
         Emergencies firstEmergency = emergencies.get(0);
 
