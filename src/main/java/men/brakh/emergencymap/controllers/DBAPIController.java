@@ -40,13 +40,13 @@ public class DBAPIController {
     public @ResponseBody
     ResponseEntity<String> getRegionsList(@RequestParam String startDate, @RequestParam String endDate) {
 
-        java.util.Date start = null;
-        java.util.Date end = null;
+        java.util.Date start;
+        java.util.Date end;
         try {
             start = sdf1.parse(startDate);
             end = sdf1.parse(endDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>("Error: Incorrect date", HttpStatus.BAD_REQUEST);
         }
         java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
         java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
