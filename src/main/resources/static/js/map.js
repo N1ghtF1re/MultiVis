@@ -1,3 +1,5 @@
+"use strict";
+
 let emergencyMap;
 
 // Дождёмся загрузки API и готовности DOM.
@@ -7,7 +9,7 @@ function init () {
     // Создание экземпляра карты и его привязка к контейнеру с
     // заданным id ("map").
 
-    var map,
+    let map,
         center = [28.2, 53.9],
         zoom = 6.5;
 
@@ -30,12 +32,11 @@ function ShowCity(Region, color, desc) {
         .then(function (data) {
 
             $.each(data, function(ix, place) {
-                if ("relation" == place.osm_type) {
+                if ("relation" === place.osm_type) {
                     // Создаем полигон с нужными координатами
-                    console.log(place.geojson.coordinates == undefined)
-                    if ((place.geojson.coordinates[1] == undefined) || ( place.geojson.coordinates[1][1] !=  undefined)) {
-                        console.log(place.geojson.coordinates)
-                        var p = new ymaps.Polygon(place.geojson.coordinates, {
+                    let p;
+                    if ((place.geojson.coordinates[1] === undefined) || ( place.geojson.coordinates[1][1] !==  undefined)) {
+                        p = new ymaps.Polygon(place.geojson.coordinates, {
                             hintContent: Region
                         }, {
                             fillColor: color,
@@ -46,8 +47,7 @@ function ShowCity(Region, color, desc) {
                             opacity: 0.7
                         });
                     } else {
-                        console.log(place.geojson.coordinates)
-                        var p = new ymaps.Polygon(place.geojson.coordinates[0], {
+                        p = new ymaps.Polygon(place.geojson.coordinates[0], {
                             hintContent: Region
                         }, {
                             fillColor: color,
@@ -61,7 +61,7 @@ function ShowCity(Region, color, desc) {
 
                     // Добавляем полигон на карту
                     p.events.add('click', function () {
-                        alert(desc);
+                        showSituatuinsPopup(Region, desc, sitsList, basicColors);
                     });
                     emergencyMap.geoObjects.add(p);
                 }

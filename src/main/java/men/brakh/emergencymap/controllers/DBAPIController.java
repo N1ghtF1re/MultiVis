@@ -5,6 +5,7 @@ import men.brakh.emergencymap.db.Emergencies;
 import men.brakh.emergencymap.db.EmergenciesRepository;
 import men.brakh.emergencymap.db.Situations;
 import men.brakh.emergencymap.db.SituationsRepository;
+import men.brakh.emergencymap.models.Color;
 import men.brakh.emergencymap.models.Region;
 import men.brakh.emergencymap.models.RegionsList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,5 +153,35 @@ public class DBAPIController {
     @RequestMapping("/sitsList")
     public @ResponseBody Iterable<Situations> getSitsList() {
         return situationsRepository.findAll();
+    }
+
+    /**
+     * Класс для возврата ID вместе с цветом при запросе
+     */
+    private class ColorWidthId extends Color{
+        private int id;
+        public ColorWidthId(Color color, int id) {
+            super(color);
+            this.id = id;
+        }
+        public int getId() {
+            return id;
+        }
+    }
+
+    /**
+     * Возвращает базовые цвета
+     * @return JSON с базовыми цветами
+     */
+    @RequestMapping("/basicColors")
+    public @ResponseBody ColorWidthId[] getBasicColors() {
+
+        Color[] colors = Color.getBasicColors(19);
+        ColorWidthId[] colorWidthIds = new ColorWidthId[colors.length];
+        for(int i = 0; i < colors.length; i++) {
+            colorWidthIds[i] = new ColorWidthId(colors[i], i+1);
+        }
+
+        return colorWidthIds;
     }
 }
