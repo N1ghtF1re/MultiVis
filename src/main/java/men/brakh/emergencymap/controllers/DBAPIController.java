@@ -31,6 +31,9 @@ public class DBAPIController {
     @Autowired
     private SituationsRepository situationsRepository;
 
+    @Autowired
+    private PolygonsRepository polygonsRepository;
+
 
     final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -187,7 +190,19 @@ public class DBAPIController {
     @RequestMapping("/polygons/get")
     public @ResponseBody String getPolygon(@RequestParam  String region) {
         region = region.replaceAll(" ", "%20");
+        Polygons polygons = polygonsRepository.findFirstByRegion(region);
+        if(polygons != null) {
+            return polygons.getPolygon();
+        }
         HttpInteraction http = new HttpInteraction();
-        return http.getCoordsFromNominatim(region);
+        String coords = http.getCoordsFromNominatim(region);
+
+        Polygons n = new Polygons();
+        n.setRegion(region);
+        n.setPolygon(coords);
+
+        polygonsRepository.save(n);
+
+        return coords;
     }
 }

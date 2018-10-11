@@ -48,8 +48,6 @@ public class HttpInteraction {
         try {
             String result = sendGet(strurl);
 
-            System.out.println("RESULT: " + result);
-
             JsonParser parser = new JsonParser();
 
             JsonArray arr = parser.parse(result).getAsJsonArray();
@@ -58,8 +56,6 @@ public class HttpInteraction {
             JsonPrimitive osmType = mainObject.getAsJsonPrimitive("osm_type");
 
             if(osmType.getAsString().equals("relation")) {
-
-                System.out.println("KEEEEEEEEEEK" + osmType.toString());
 
                 JsonObject geojson = mainObject.getAsJsonObject("geojson");
                 JsonArray coordinates = geojson.getAsJsonArray("coordinates");
