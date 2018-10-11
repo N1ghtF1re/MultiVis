@@ -1,10 +1,8 @@
 package men.brakh.emergencymap.controllers;
 
-import com.google.gson.Gson;
-import men.brakh.emergencymap.db.Emergencies;
-import men.brakh.emergencymap.db.EmergenciesRepository;
-import men.brakh.emergencymap.db.Situations;
-import men.brakh.emergencymap.db.SituationsRepository;
+import com.google.gson.*;
+import men.brakh.emergencymap.HttpInteraction;
+import men.brakh.emergencymap.db.*;
 import men.brakh.emergencymap.models.Color;
 import men.brakh.emergencymap.models.Region;
 import men.brakh.emergencymap.models.RegionsList;
@@ -32,6 +30,7 @@ public class DBAPIController {
 
     @Autowired
     private SituationsRepository situationsRepository;
+
 
     final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -183,5 +182,12 @@ public class DBAPIController {
         }
 
         return colorWidthIds;
+    }
+
+    @RequestMapping("/polygons/get")
+    public @ResponseBody String getPolygon(@RequestParam  String region) {
+        region = region.replaceAll(" ", "%20");
+        HttpInteraction http = new HttpInteraction();
+        return http.getCoordsFromNominatim(region);
     }
 }

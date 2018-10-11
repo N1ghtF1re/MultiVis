@@ -12,6 +12,20 @@ function getSitsList() {
     });
 }
 
+function getPolygon(region) {
+    let result;
+    $.ajax({
+        url: "/api/polygons/get",
+        type: 'GET',
+        data: "region=" + region,
+        async: false,
+        success: function(msg) {
+            result = msg
+        }
+    });
+    return result;
+}
+
 function getBasicColors() {
     $.ajax({
         url: "/api/basicColors",
