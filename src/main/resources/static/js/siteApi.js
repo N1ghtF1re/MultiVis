@@ -41,11 +41,11 @@ function getSitName(index) {
     return sitsList[index-1]['name'];
 }
 
-function makeRequest() {
+function makeRequest(startdate, enddate) {
     $.ajax({
         url: "/api/regionsList",
         type: 'POST',
-        data: 'startDate=2016-01-01&endDate=2017-01-01',
+        data: 'startDate='+ startdate + '&endDate='+enddate,
         async: true,
         success: function(msg) {
             let cities = JSON.parse(msg);

@@ -89,7 +89,7 @@
     <div class="daterange-block">
         Выбор диапазона:
         <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
-        <button class="btn">Обновить!</button>
+        <button class="btn" id="update">Обновить!</button>
     </div>
 
 </div>
@@ -103,7 +103,11 @@
     getSitsList();
     getBasicColors();
     ymaps.ready(function () {
-        makeRequest() // Когда карта прогрузится, делаем первый запрос
+        makeRequest('2016-01-01', '2017-01-01') // Когда карта прогрузится, делаем первый запрос
+    });
+    $('#update').click(function(){
+        emergencyMap.geoObjects.removeAll();
+        makeRequest(startDate, endDate);
     });
 </script>
 

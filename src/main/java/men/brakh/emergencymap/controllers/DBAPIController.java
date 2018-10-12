@@ -47,7 +47,8 @@ public class DBAPIController {
     @RequestMapping("regionsList")
     public @ResponseBody
     ResponseEntity<String> getRegionsList(@RequestParam String startDate, @RequestParam String endDate) {
-
+        System.out.println(startDate);
+        System.out.println(endDate);
         java.util.Date start;
         java.util.Date end;
         try {
