@@ -46,7 +46,7 @@ function makeRequest() {
         url: "/api/regionsList",
         type: 'POST',
         data: 'startDate=2016-01-01&endDate=2017-01-01',
-        async: false,
+        async: true,
         success: function(msg) {
             let cities = JSON.parse(msg);
             for(let i = 0; i < cities.length; i++) {
