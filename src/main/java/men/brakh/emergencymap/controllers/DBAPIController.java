@@ -60,7 +60,7 @@ public class DBAPIController {
         java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
         java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
 
-        RegionsList regionsList = new RegionsList(19, sqlStartDate, sqlEndDate, emergenciesRepository);
+        RegionsList regionsList = new RegionsList(situationsRepository.getSitCount(), sqlStartDate, sqlEndDate, emergenciesRepository);
 
 
         Gson gson = new Gson();
@@ -179,7 +179,7 @@ public class DBAPIController {
     @RequestMapping("/basicColors")
     public @ResponseBody ColorWidthId[] getBasicColors() {
 
-        Color[] colors = Color.getBasicColors(19);
+        Color[] colors = Color.getBasicColors(situationsRepository.getSitCount());
         ColorWidthId[] colorWidthIds = new ColorWidthId[colors.length];
         for(int i = 0; i < colors.length; i++) {
             colorWidthIds[i] = new ColorWidthId(colors[i], i+1);
@@ -188,9 +188,14 @@ public class DBAPIController {
         return colorWidthIds;
     }
 
+    /**
+     * Получение полигона для региона
+     * @param region Название региона
+     * @return полигон региона
+     */
     @RequestMapping("/polygons/get")
     public @ResponseBody String getPolygon(@RequestParam  String region) {
-        region = region.replaceAll(" ", "%20");
+        region = region.replaceAll(" ", "%20"); // Заменяем пробелы на %20 ()
         Polygons polygons = polygonsRepository.findFirstByRegion(region);
         if(polygons != null) {
             return polygons.getPolygon();
@@ -205,5 +210,14 @@ public class DBAPIController {
         polygonsRepository.save(n);
 
         return coords;
+    }
+
+    /**
+     * Возвращаем количество уникальный ситуаций в БД
+     * @return количество уникальных ситуаций в БД
+     */
+    @RequestMapping("/sitList/count")
+    public @ResponseBody int getSitsCount(){
+        return situationsRepository.getSitCount();
     }
 }
