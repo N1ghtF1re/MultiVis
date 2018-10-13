@@ -9,7 +9,7 @@ public class MainController {
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String index() {
-    return "hello.html";
+    return "index.html";
   }
 
 }
