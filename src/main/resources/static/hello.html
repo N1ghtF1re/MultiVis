@@ -77,6 +77,24 @@
     .btn:hover {
         background: #464646;
     }
+    #load {
+        position: fixed;
+        top: calc(50% - 45px);
+        background: #fff;
+        border: 3px solid #b7b7b7;
+        padding: 20px;
+        width: 200px;
+        height: 90px;
+        left: calc(50% - 100px);
+        z-index: 9999;
+        text-align: center;
+    }
+    #load div {
+        font-size: 18px;
+        padding-bottom: 10px;
+    }
+
+
 
   </style>
   <link rel="stylesheet" href="css/daterangepicker.css">
@@ -94,7 +112,10 @@
 
 </div>
 <div id="map"></div>
-
+<div id="load">
+    <div>Загрузка...</div>
+    <img src="gif/loading.gif">
+</div>
 <script>
     let sitsList;
     let basicColors;
@@ -104,8 +125,11 @@
     getBasicColors();
     ymaps.ready(function () {
         makeRequest('2016-01-01', '2017-01-01') // Когда карта прогрузится, делаем первый запрос
+
     });
     $('#update').click(function(){
+        document.getElementById("load").style.display = "";
+
         emergencyMap.geoObjects.removeAll();
         makeRequest(startDate, endDate);
     });

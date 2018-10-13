@@ -52,9 +52,11 @@ function makeRequest(startdate, enddate) {
             for(let i = 0; i < cities.length; i++) {
                 ShowCity(cities[i]['name'], cities[i]['color'], cities[i]['sits'])
             }
+            document.getElementById("load").style.display = "none";
         },
         error: function(msg) {
             alert(msg);
         }
     });
+
 }
