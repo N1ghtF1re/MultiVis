@@ -25,7 +25,7 @@ function init () {
 }
 
 
-function ShowCity(Region, color, desc) {
+async function ShowCity(Region, color, desc) {
     Region += ", Беларусь";
     let p;
     let coordinates
