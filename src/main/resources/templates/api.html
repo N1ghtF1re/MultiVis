@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Emergency MAP</title>
+
+    <!-- STYLES -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/default.css}"/>
+    <script th:src="@{js/highlight.pack.js}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+
+<body>
+<div id="menu">
+    <a class="logo" href="/">B<span>rakh</span>M<span>en</span></a>
+</div>
+
+<div id="content">
+    <input type="checkbox" id="spoiler2" />
+    <label for="spoiler2" >Получение сформированного списка регионов</label>
+    <div class="spoiler">
+        <table class="api-table">
+            <tr>
+                <th><b>Метод</b></th>
+                <th><b>HTTP запрос</b></th>
+                <th><b>Описание</b></th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>
+                    <span th:text="${host}" th:remove="tag">title</span>/api/regionsList
+                    <br/>
+                    Параметры:
+                    <ul>
+                        <li><b>startDate</b> - начальная дата для поиска в формате yyyy-MM-dd</li>
+                        <li><b>endDate</b> - Конечная дата дата для поиска в формате yyyy-MM-dd </li>
+                    </ul>
+                    <br/>
+                    Пример запроса:<br/>
+                    <a th:href="@{'/api/regionsList'(startDate='2016-02-03', endDate='2017-02-03')}">
+                        <span th:text="${host}" th:remove="tag">title</span>/api/regionsList?startDate=2016-02-03&amp;endDate=2017-02-03
+                    </a>
+
+
+                </td>
+                <td>HTTP запрос для получения сформированного списка регионов с уже просчитанным цветом за определенный период</td>
+            </tr>
+        </table>
+        <br/>
+        Для успешного выполнения запроса нужно обязательно передать оба параметра в URL.
+        <br/>
+        <br/>
+        <b>Пример ответа:</b>
+        <pre>
+            <code class="json">
+[
+  {
+    "name": "Барановичский район",
+    "color": "#cde7f2",
+    "sits": [2, 0, 0, 0, 0, 0, 0, 0, 2, 6, 1, 10, 0, 1, 16, 1, 2, 0, 0]
+  },
+  {
+    "name": "Белыничский район",
+    "color": "#dce9f2",
+    "sits": [3, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 7, 0, 0, 6, 1, 1, 0, 0]
+  },
+  ...
+]
+            </code>
+        </pre>
+    </div>
+
+
+</div>
+
+
+<footer><a href="https://brakhmen.info/" target="_blank">BrakhMen Corp. © 2018</a></footer>
+
+</body>
+
+</html>
+
