@@ -44,7 +44,7 @@ public class DBAPIController {
      * @param endDate Конечная дата диапазона в формате yyyy-MM-dd
      * @return JSON уже сформированного списка регионов с их результирующим цветом
      */
-    @RequestMapping("regionsList")
+    @RequestMapping("/regionsList")
     public @ResponseBody
     ResponseEntity<String> getRegionsList(@RequestParam String startDate, @RequestParam String endDate) {
         System.out.println(startDate);
@@ -104,46 +104,46 @@ public class DBAPIController {
      * Возвращает JSON со всеми записями из базы данных по запросу на /api/all
      * @return JSON со всеми записями из базы данных
      */
-    @RequestMapping("/all")
+    @RequestMapping(value="/accidents", params={})
     public @ResponseBody Iterable<Emergencies> getAllAccidents() {
         return emergenciesRepository.findAll();
     }
 
     /**
      * Возвращает все записи из базы данных для нужного региона по запросу на /api/region?name=REGIONNAME
-     * @param name Название региона
+     * @param region Название региона
      * @return Все записи из базы данных для нужного региона
      */
-    @RequestMapping("/region")
-    public @ResponseBody Iterable<Emergencies> getByRegion(@RequestParam String name) {
-        Iterable<Emergencies> emergencies = emergenciesRepository.findByRegion(name);
+    @RequestMapping(value="/accidents", params={"region"})
+    public @ResponseBody Iterable<Emergencies> getByRegion(@RequestParam String region) {
+        Iterable<Emergencies> emergencies = emergenciesRepository.findByRegion(region);
         for(Emergencies emergency : emergencies) {
             System.out.println(emergency.getRegion());
         }
 
-        return emergenciesRepository.findByRegion(name);
+        return emergenciesRepository.findByRegion(region);
     }
 
     /**
      * Возвращает все записи из базы данных за нужный диапазон дат по запросу на /api/date/start=DATE&end=&DATE
      * Отличается от getRegionsList тем, что getRegionsList возвращает уже подготовленный список регионов с их
      * цветом и тд, а getByDateRange - возвращает просто строки базы данных
-     * @param start Начальная дата диапазона в формате yyyy-MM-dd
-     * @param end Конечная дата диапазона в формате yyyy-MM-dd
+     * @param startDate Начальная дата диапазона в формате yyyy-MM-dd
+     * @param endDate Конечная дата диапазона в формате yyyy-MM-dd
      * @return Все записи из базы данных за нужный диапазон дат
      */
-    @RequestMapping("/date")
-    public @ResponseBody Iterable<Emergencies> getByDateRange(@RequestParam String start, @RequestParam String end) {
-        java.util.Date startDate = null;
-        java.util.Date endDate = null;
+    @RequestMapping(value="/accidents", params={"startDate", "endDate"})
+    public @ResponseBody Iterable<Emergencies> getByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+        java.util.Date start = null;
+        java.util.Date end = null;
         try {
-            startDate = sdf1.parse(start);
-            endDate = sdf1.parse(end);
+            start = sdf1.parse(startDate);
+            end = sdf1.parse(endDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
-        java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
+        java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
+        java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
 
         return emergenciesRepository.findByDateRange(sqlStartDate, sqlEndDate);
     }
