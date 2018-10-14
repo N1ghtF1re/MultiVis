@@ -78,7 +78,7 @@ public class DBAPIController {
      * @return "Saved" если добавление выполнено успешно
      */
     @RequestMapping("/add")
-    public @ResponseBody String addNewUser (@RequestParam String region
+    public @ResponseBody String addNewAccident (@RequestParam String region
             , @RequestParam int situation, @RequestParam String strDate) {
 
         Emergencies n = new Emergencies();
@@ -105,7 +105,7 @@ public class DBAPIController {
      * @return JSON со всеми записями из базы данных
      */
     @RequestMapping("/all")
-    public @ResponseBody Iterable<Emergencies> getAllUsers() {
+    public @ResponseBody Iterable<Emergencies> getAllAccidents() {
         return emergenciesRepository.findAll();
     }
 
