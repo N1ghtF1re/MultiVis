@@ -101,7 +101,7 @@ public class DBAPIController {
     }
 
     /**
-     * Возвращает JSON со всеми записями из базы данных по запросу на /api/all
+     * Возвращает JSON со всеми записями из базы данных по запросу
      * @return JSON со всеми записями из базы данных
      */
     @RequestMapping(value="/accidents", params={})
@@ -110,7 +110,7 @@ public class DBAPIController {
     }
 
     /**
-     * Возвращает все записи из базы данных для нужного региона по запросу на /api/region?name=REGIONNAME
+     * Возвращает все записи из базы данных для нужного региона по запросу
      * @param region Название региона
      * @return Все записи из базы данных для нужного региона
      */
@@ -124,8 +124,9 @@ public class DBAPIController {
         return emergenciesRepository.findByRegion(region);
     }
 
+
     /**
-     * Возвращает все записи из базы данных за нужный диапазон дат по запросу на /api/date/start=DATE&end=&DATE
+     * Возвращает все записи из базы данных за нужный диапазон дат по запросу
      * Отличается от getRegionsList тем, что getRegionsList возвращает уже подготовленный список регионов с их
      * цветом и тд, а getByDateRange - возвращает просто строки базы данных
      * @param startDate Начальная дата диапазона в формате yyyy-MM-dd
@@ -148,6 +149,29 @@ public class DBAPIController {
         return emergenciesRepository.findByDateRange(sqlStartDate, sqlEndDate);
     }
 
+    /**
+     * Возвращает все записи из базы данных за нужный диапазон дат для нужного региона
+     * @param startDate Начальная дата диапазона в формате yyyy-MM-dd
+     * @param endDate Конечная дата диапазона в формате yyyy-MM-dd
+     * @param region Навание региона
+     * @return Все записи из базы данных за нужный диапазон дат
+     */
+    @RequestMapping(value="/accidents", params={"startDate", "endDate", "region"})
+    public @ResponseBody Iterable<Emergencies> getByDateRangeAndRegion(@RequestParam String startDate, @RequestParam String endDate, String region) {
+        java.util.Date start = null;
+        java.util.Date end = null;
+
+        try {
+            start = sdf1.parse(startDate);
+            end = sdf1.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
+        java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
+
+        return emergenciesRepository.findByDateRangeAndRegion(sqlStartDate, sqlEndDate, region);
+    }
 
     /**
      * Возвращает список ситуаций (id, название)

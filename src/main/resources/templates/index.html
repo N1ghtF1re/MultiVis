@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Emergency MAP</title>
+
+    <!-- SCRIPTS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script th:src="@{'https://api-maps.yandex.ru/2.1/'(lang='ru_RU', coordorder='longlat')}" type="text/javascript"></script>
+    <script th:src="@{js/siteApi.js}" type="text/javascript"></script>
+    <script th:src="@{js/map.js}" type="text/javascript"></script>
+    <script th:src="@{js/popup.js}" type="text/javascript"></script>
+    <script th:src="@{js/daterangepicker.min.js}" type="text/javascript" ></script>
+
+    <!-- STYLES -->
+    <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <link rel="stylesheet" th:href="@{css/daterangepicker.css}"/>
+    <link rel="stylesheet" th:href="@{css/popup.css}"/>
+</head>
+
+<body style="overflow-y: hidden">
+<div id="menu">
+    <a class="logo" href="#top">B<span>rakh</span>M<span>en</span></a>
+    <div class="daterange-block">
+        Выбор диапазона:
+        <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
+        <button class="btn" id="update">Обновить!</button>
+    </div>
+</div>
+
+<div id="map"></div>
+
+<footer><a href="https://brakhmen.info/" target="_blank">BrakhMen Corp. © 2018</a></footer>
+
+<div id="load">
+    <div>Загрузка...</div>
+    <img th:src="@{gif/loading.gif}"/>
+</div>
+
+<script>
+    let sitsList;
+    let basicColors;
+    let startDate = '';
+    let endDate = '';
+    getSitsList();
+    getBasicColors();
+    ymaps.ready(function () {
+        makeRequest('2016-01-01', '2017-01-01') // Когда карта прогрузится, делаем первый запрос
+
+    });
+    $('#update').click(function(){
+        document.getElementById("load").style.display = "";
+
+        emergencyMap.geoObjects.removeAll();
+        makeRequest(startDate, endDate);
+    });
+</script>
+
+<script th:src="@{js/daterangepicker_init.js}" type="text/javascript"></script>
+</body>
+
+</html>
+

@@ -19,5 +19,9 @@ public interface EmergenciesRepository extends CrudRepository<Emergencies, Integ
     @Query("SELECT e FROM Emergencies e where date > :startDate AND date < :endDate ORDER BY region")
     public Iterable<Emergencies> findByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+    // ПОИСК ПО ДИАПАЗОНУ ДАТ + РЕГИОНОВ
+    @Query("SELECT e FROM Emergencies e where date > :startDate AND date < :endDate AND e.region = :region")
+    public Iterable<Emergencies> findByDateRangeAndRegion(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("region") String region);
+
 
 }
