@@ -182,6 +182,7 @@ public class DBAPIController {
         return situationsRepository.findAll();
     }
 
+
     /**
      * Класс для возврата ID вместе с цветом при запросе
      */
@@ -240,7 +241,7 @@ public class DBAPIController {
      * Возвращаем количество уникальный ситуаций в БД
      * @return количество уникальных ситуаций в БД
      */
-    @RequestMapping("/sitList/count")
+    @RequestMapping("/sitsList/count")
     public @ResponseBody int getSitsCount(){
         return situationsRepository.getSitCount();
     }

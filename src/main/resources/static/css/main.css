@@ -88,13 +88,15 @@ footer {
     text-align: center;
     color: #000;
 }
+footer span {
+    background: #ffffffb5;
+    border-radius: 2px;
+}
 footer a {
     color: #2a2929!important;
     text-decoration: none!important;
     font-family: monospace;
-    background: #ffffffb5;
     padding: 3px 10px;
-    border-radius: 2px;
 }
 
 #content {
@@ -159,6 +161,7 @@ input[id^="spoiler"]:checked + label + .spoiler{
 }
 .api-table {
     border-collapse: collapse;
+    width: 100%;
 }
 #content a {
     text-decoration: none;

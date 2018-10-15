@@ -19,6 +19,16 @@
 </div>
 
 <div id="content">
+    <p style="text-align: center;">
+        Сервис "MultiVis" предоставляет предоставляет программные интерфесы.
+        <br/><br/>
+        Обращаем Ваше внимание, что Вы используете данные сервисы на свой страх и риск.
+        <br/><br/>
+        Программные интерфейсы могут быть модифицированы либо отключены в любое время без предварительного уведомления.
+        <br/><br/>
+        Также в любое время могут измениться условия доступа к сервисам. Таким образом, используя наши сервисы, Вы соглашаетесь с данными условиями.
+    </p>
+
     <input type="checkbox" id="spoiler-regionList" />
     <label for="spoiler-regionList" >Получение сформированного списка регионов</label>
     <div class="spoiler">
@@ -74,8 +84,8 @@
     </div>
 
 
-    <input type="checkbox" id="spoiler-all" />
-    <label for="spoiler-all" >Получение "сырых" происшествий</label>
+    <input type="checkbox" id="spoiler-accidents" />
+    <label for="spoiler-accidents" >Получение "сырых" происшествий</label>
     <div class="spoiler">
         <table class="api-table">
             <tr>
@@ -156,11 +166,179 @@
     </div>
 
 
+    <input type="checkbox" id="spoiler-sitsList" />
+    <label for="spoiler-sitsList" >Получение списка ситуаций</label>
+    <div class="spoiler">
+        <table class="api-table">
+            <tr>
+                <th><b>Метод</b></th>
+                <th><b>HTTP запрос</b></th>
+                <th><b>Описание</b></th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>
+                    <a th:href="@{'/api/sitsList'}">
+                        <span th:text="${host}" th:remove="tag">title</span>/api/sitsList
+                    </a>
+                </td>
+                <td>Список всех ситуаций</td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+        <b>Пример ответа:</b>
+        <pre>
+            <code class="json">
+[
+  {
+    "id": 1,
+    "name": "Поджог"
+  },
+  {
+    "id": 2,
+    "name": "Нарушения технологического регламента (процесса)"
+  },
+  ...
+]
+            </code>
+        </pre>
+    </div>
+
+    <input type="checkbox" id="spoiler-sitCount" />
+    <label for="spoiler-sitCount" >Получение количества уникальных ситуаций</label>
+    <div class="spoiler">
+        <table class="api-table">
+            <tr>
+                <th><b>Метод</b></th>
+                <th><b>HTTP запрос</b></th>
+                <th><b>Описание</b></th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>
+                    <a th:href="@{'/api/sitsList/count'}">
+                        <span th:text="${host}" th:remove="tag">title</span>/sitsList/count
+                    </a>
+                </td>
+                <td>Число уникальных ситуаций</td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+        <b>Пример ответа:</b>
+        <pre>
+            <code class="json">
+19
+            </code>
+        </pre>
+    </div>
+
+
+    <input type="checkbox" id="spoiler-basicColors" />
+    <label for="spoiler-basicColors" >Получение списка базовых цветов</label>
+    <div class="spoiler">
+        <table class="api-table">
+            <tr>
+                <th><b>Метод</b></th>
+                <th><b>HTTP запрос</b></th>
+                <th><b>Описание</b></th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>
+                    <a th:href="@{'/api/basicColors'}">
+                        <span th:text="${host}" th:remove="tag">title</span>/api/basicColors
+                    </a>
+                </td>
+                <td>Список всех базовых цветов</td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+        <b>Пример ответа:</b>
+        <pre>
+            <code class="json">
+[
+  {
+    "hex": "#ff0000",
+    "rgb": [255, 0, 0],
+    "id": 1
+  },
+  {
+    "hex": "#ff4600",
+    "rgb": [255, 70, 0],
+    "id": 2
+  },
+  ...
+]
+            </code>
+        </pre>
+    </div>
+
+    <input type="checkbox" id="spoiler-polygons-get" />
+    <label for="spoiler-polygons-get" >Получение координат полигона определенного региона</label>
+    <div class="spoiler">
+        <table class="api-table">
+            <tr>
+                <th><b>Метод</b></th>
+                <th><b>HTTP запрос</b></th>
+                <th><b>Описание</b></th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>
+                    <span th:text="${host}" th:remove="tag">title</span>/polygons/get
+                    <br/>
+                    Параметры:
+                    <ul>
+                        <li><b>region</b> - название региона</li>
+                    </ul>
+                    <br/>
+                    Пример запроса:<br/>
+                    <a th:href="@{'/api/polygons/get'(region='Молодечно')}">
+                        <span th:text="${host}" th:remove="tag">title</span>/api/polygons/get?region=Молодечно
+                    </a>
+
+
+                </td>
+                <td>HTTP запрос для получения координат полгона определенного региона для дальнейшего нанесения на карту</td>
+            </tr>
+        </table>
+        <br/>
+        Для успешного выполнения запроса нужно обязательно передать параметр в URL.
+        <br/>
+        <br/>
+        <b>Пример ответа:</b>
+        <pre>
+            <code class="json">
+[
+  [
+    [
+      26.7890666,
+      54.3066465
+    ],
+    [
+      26.7891994,
+      54.3057404
+    ],
+    ...
+  ]
+]
+            </code>
+        </pre>
+    </div>
+
+
 </div>
 
 
-<footer><a href="https://brakhmen.info/" target="_blank">BrakhMen Corp. © 2018</a></footer>
-
+<footer>
+    <span>
+        <a href="https://brakhmen.info/" target="_blank">BrakhMen Corp. © 2018</a>
+        <a href="/api" target="_blank">API</a>
+    </span>
+</footer>
 </body>
 
 </html>
