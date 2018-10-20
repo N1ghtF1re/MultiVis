@@ -11,6 +11,7 @@ import java.util.Properties;
 public class PropertiesReader {
     private String filename;
 
+
     public PropertiesReader(String filename) {
         this.filename = filename;
     }
