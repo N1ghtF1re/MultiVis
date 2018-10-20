@@ -4,27 +4,28 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import men.brakh.emergencymap.configuration.PropertiesReader;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Класс для "Общения" с апи Nominatim
  */
 public class NominatimCommunication {
-    String host;
-    String key;
-    HttpInteraction httpInteraction;
+    private String host;
+    private String key;
+    private HttpInteraction httpInteraction;
+
+    private final static String propertiesFile = "nominatim.properties";
 
     public NominatimCommunication() {
+        PropertiesReader propertiesReader = new PropertiesReader(propertiesFile);
         try {
-            host = getProperties("host");
-            key = getProperties("key");
+            host = propertiesReader.read("host");
+            key = propertiesReader.read("key");
         } catch (IOException e) {
             new RuntimeException(e);
         }
@@ -128,41 +129,6 @@ public class NominatimCommunication {
         }
 
         throw new InvalidParameterException("Bad region :(");
-    }
-
-    /**
-     * Чтение ресурсов с конфигурацией АПИ Nominatim (key, host, ...)
-     * @param propName Название свойства
-     * @return Значение свойства
-     * @throws IOException
-     */
-    public String getProperties(String propName) throws IOException {
-        String result = "";
-        InputStream inputStream = null;
-
-        try {
-            Properties prop = new Properties();
-            String propFileName = "nominatim.properties";
-
-            inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-
-            if (inputStream != null) {
-                prop.load(inputStream);
-            } else {
-                throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-            }
-
-
-            String property = prop.getProperty(propName);
-
-            System.out.println( "PROP " + propName + " : " + property);
-            result = property;
-        } catch (Exception e) {
-            System.out.println("Exception: " + e);
-        } finally {
-            inputStream.close();
-        }
-        return result;
     }
 
 }
