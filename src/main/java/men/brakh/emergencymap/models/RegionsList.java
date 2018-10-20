@@ -2,8 +2,8 @@ package men.brakh.emergencymap.models;
 
 import men.brakh.emergencymap.db.Emergencies;
 import men.brakh.emergencymap.db.EmergenciesRepository;
-import men.brakh.emergencymap.сoefficientsСalculators.CoefficientsСalculators;
-import men.brakh.emergencymap.сoefficientsСalculators.impl.BasicCoefficientsСalculators;
+import men.brakh.emergencymap.models.сoefficientsСalculators.CoefficientsСalculators;
+import men.brakh.emergencymap.models.сoefficientsСalculators.impl.BasicCoefficientsСalculators;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class RegionsList {
      * Возвращаем результат запроса в БД, предварительно превратив из итератора в список
      * @return
      */
-    List<Emergencies> getEmergenciesFromDB() {
+    List<Emergencies> getStaticsFromDB() {
         Iterable<Emergencies> emergencies = emergenciesRepository.findByDateRange(startDate, endDate);
         List<Emergencies> target = new ArrayList<>();
         emergencies.forEach(target::add);
@@ -58,7 +58,7 @@ public class RegionsList {
      */
     public void init() {
         // Получаем итерируемый объект со списком строк базы данных по запросу
-        List<Emergencies> emergencies = getEmergenciesFromDB();
+        List<Emergencies> emergencies = getStaticsFromDB();
 
         if(emergencies.size() == 0) {
             return; // Если из базы данных ничего не вернули - просто выходим из инициализации

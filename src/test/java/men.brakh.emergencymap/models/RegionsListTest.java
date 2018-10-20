@@ -50,7 +50,7 @@ public class RegionsListTest {
 
         RegionsList regions = new RegionsList(3, new Date(1), new Date(1), null) {
             @Override
-            List<Emergencies> getEmergenciesFromDB() {
+            List<Emergencies> getStaticsFromDB() {
                 return emergencies;
             }
         };
@@ -82,7 +82,7 @@ public class RegionsListTest {
 
         RegionsList regions = new RegionsList(3, new Date(1), new Date(1), null) {
             @Override
-            List<Emergencies> getEmergenciesFromDB() {
+            List<Emergencies> getStaticsFromDB() {
                 return emergencies;
             }
         };
@@ -108,7 +108,7 @@ public class RegionsListTest {
 
         RegionsList regions = new RegionsList(3, new Date(1), new Date(1), null) {
             @Override
-            List<Emergencies> getEmergenciesFromDB() {
+            List<Emergencies> getStaticsFromDB() {
                 return emergencies;
             }
         };
@@ -158,7 +158,7 @@ public class RegionsListTest {
 
         RegionsList regions = new RegionsList(3, new Date(1), new Date(1), null) {
             @Override
-            List<Emergencies> getEmergenciesFromDB() {
+            List<Emergencies> getStaticsFromDB() {
                 return emergencies;
             }
         };
