@@ -1,7 +1,7 @@
-package men.brakh.emergencymap.сoefficientsСalculators.impl;
+package men.brakh.emergencymap.models.сoefficientsСalculators.impl;
 
 import men.brakh.emergencymap.models.Region;
-import men.brakh.emergencymap.сoefficientsСalculators.CoefficientsСalculators;
+import men.brakh.emergencymap.models.сoefficientsСalculators.CoefficientsСalculators;
 
 /**
  * Осветление ситуации только на основе максимальных значений

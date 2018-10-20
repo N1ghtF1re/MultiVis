@@ -1,4 +1,4 @@
-package men.brakh.emergencymap.сoefficientsСalculators;
+package men.brakh.emergencymap.models.сoefficientsСalculators;
 
 import men.brakh.emergencymap.models.Region;
 

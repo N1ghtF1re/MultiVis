@@ -1,8 +1,8 @@
 package men.brakh.emergencymap.controllers;
 
-import com.google.gson.*;
-import men.brakh.emergencymap.HttpInteraction;
+import com.google.gson.Gson;
 import men.brakh.emergencymap.db.*;
+import men.brakh.emergencymap.http.NominatimCommunication;
 import men.brakh.emergencymap.models.Color;
 import men.brakh.emergencymap.models.Region;
 import men.brakh.emergencymap.models.RegionsList;
@@ -225,8 +225,8 @@ public class DBAPIController {
         if(polygons != null) {
             return polygons.getPolygon();
         }
-        HttpInteraction http = new HttpInteraction();
-        String coords = http.getCoordsFromNominatim(region);
+        NominatimCommunication nominatimCommunication = new NominatimCommunication();
+        String coords = nominatimCommunication.getCoordsFromNominatim(region);
 
         Polygons n = new Polygons();
         n.setRegion(region);
