@@ -34,6 +34,9 @@ public class DBAPIController {
     @Autowired
     private PolygonsRepository polygonsRepository;
 
+    @Autowired
+    private PopulationsRepository populationsRepository;
+
 
     final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -46,9 +49,7 @@ public class DBAPIController {
      */
     @RequestMapping("/regionsList")
     public @ResponseBody
-    ResponseEntity<String> getRegionsList(@RequestParam String startDate, @RequestParam String endDate) {
-        System.out.println(startDate);
-        System.out.println(endDate);
+    ResponseEntity<String> getRegionsList(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String mode) {
         java.util.Date start;
         java.util.Date end;
         try {
@@ -60,7 +61,7 @@ public class DBAPIController {
         java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
         java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
 
-        RegionsList regionsList = new RegionsList(situationsRepository.getSitCount(), sqlStartDate, sqlEndDate, emergenciesRepository);
+        RegionsList regionsList = new RegionsList(situationsRepository.getSitCount(), sqlStartDate, sqlEndDate, mode);
 
 
         Gson gson = new Gson();

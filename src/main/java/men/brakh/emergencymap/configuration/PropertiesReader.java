@@ -40,8 +40,6 @@ public class PropertiesReader {
 
 
             String property = prop.getProperty(propName);
-
-            System.out.println( "PROP " + propName + " : " + property);
             result = property;
         } catch (Exception e) {
             throw new RuntimeException(e);
