@@ -1,28 +1,26 @@
 package men.brakh.emergencymap.controllers;
 
-import com.google.gson.Gson;
 import men.brakh.emergencymap.db.*;
 import men.brakh.emergencymap.http.NominatimCommunication;
 import men.brakh.emergencymap.models.Color;
 import men.brakh.emergencymap.models.Region;
 import men.brakh.emergencymap.models.RegionsList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Наброски API сервиса
  */
 
-@Controller
+@RestController
 @RequestMapping(path="/api")
 public class DBAPIController {
     @Autowired
@@ -45,31 +43,29 @@ public class DBAPIController {
      * Вовзращает JSON уже сформированного списка регионов с их результирующим цветом
      * @param startDate Начальная дата диапазона в формате yyyy-MM-dd
      * @param endDate Конечная дата диапазона в формате yyyy-MM-dd
+     * @param mode Режим отображения (базовый/на основе демографии. По умолчанию: basic)
      * @return JSON уже сформированного списка регионов с их результирующим цветом
      */
-    @RequestMapping("/regionsList")
-    public @ResponseBody
-    ResponseEntity<String> getRegionsList(@RequestParam String startDate, @RequestParam String endDate, @RequestParam String mode) {
+    @RequestMapping(value="/regionsList")
+    public List<Region> getRegionsList(@RequestParam String startDate,
+                                       @RequestParam String endDate,
+                                       @RequestParam(defaultValue = "basic") String mode) {
         java.util.Date start;
         java.util.Date end;
         try {
             start = sdf1.parse(startDate);
             end = sdf1.parse(endDate);
         } catch (ParseException e) {
-            return new ResponseEntity<>("Error: Incorrect date", HttpStatus.BAD_REQUEST);
+            return new ArrayList<Region>();
         }
         java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
         java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
 
         RegionsList regionsList = new RegionsList(situationsRepository.getSitCount(), sqlStartDate, sqlEndDate, mode);
 
-
-        Gson gson = new Gson();
-        List<Region> cities = regionsList.getList();
-        String resultJson = gson.toJson(cities);
-
-        return new ResponseEntity<>(resultJson, HttpStatus.OK);
+        return regionsList.getList();
     }
+
 
     /**
      * Добавление элемента в базу данных по запросу на /api/add&region=REGION&situation=SITUATION&strDate=STRDATE
@@ -79,8 +75,9 @@ public class DBAPIController {
      * @return "Saved" если добавление выполнено успешно
      */
     @RequestMapping("/add")
-    public @ResponseBody String addNewAccident (@RequestParam String region
-            , @RequestParam int situation, @RequestParam String strDate) {
+    public String addNewAccident (@RequestParam String region,
+                                  @RequestParam int situation,
+                                  @RequestParam String strDate) {
 
         Emergencies n = new Emergencies();
         n.setRegion(region);
@@ -106,7 +103,7 @@ public class DBAPIController {
      * @return JSON со всеми записями из базы данных
      */
     @RequestMapping(value="/accidents", params={})
-    public @ResponseBody Iterable<Emergencies> getAllAccidents() {
+    public Iterable<Emergencies> getAllAccidents() {
         return emergenciesRepository.findAll();
     }
 
@@ -116,7 +113,7 @@ public class DBAPIController {
      * @return Все записи из базы данных для нужного региона
      */
     @RequestMapping(value="/accidents", params={"region"})
-    public @ResponseBody Iterable<Emergencies> getByRegion(@RequestParam String region) {
+    public Iterable<Emergencies> getByRegion(@RequestParam String region) {
         Iterable<Emergencies> emergencies = emergenciesRepository.findByRegion(region);
         for(Emergencies emergency : emergencies) {
             System.out.println(emergency.getRegion());
@@ -135,7 +132,7 @@ public class DBAPIController {
      * @return Все записи из базы данных за нужный диапазон дат
      */
     @RequestMapping(value="/accidents", params={"startDate", "endDate"})
-    public @ResponseBody Iterable<Emergencies> getByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+    public Iterable<Emergencies> getByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
         java.util.Date start = null;
         java.util.Date end = null;
         try {
@@ -158,7 +155,7 @@ public class DBAPIController {
      * @return Все записи из базы данных за нужный диапазон дат
      */
     @RequestMapping(value="/accidents", params={"startDate", "endDate", "region"})
-    public @ResponseBody Iterable<Emergencies> getByDateRangeAndRegion(@RequestParam String startDate, @RequestParam String endDate, String region) {
+    public Iterable<Emergencies> getByDateRangeAndRegion(@RequestParam String startDate, @RequestParam String endDate, String region) {
         java.util.Date start = null;
         java.util.Date end = null;
 
@@ -179,7 +176,7 @@ public class DBAPIController {
      * @return JSON списска ситуаций [{"id": 1", "name": "..."}, ...]
      */
     @RequestMapping("/sitsList")
-    public @ResponseBody Iterable<Situations> getSitsList() {
+    public Iterable<Situations> getSitsList() {
         return situationsRepository.findAll();
     }
 
@@ -203,7 +200,7 @@ public class DBAPIController {
      * @return JSON с базовыми цветами
      */
     @RequestMapping("/basicColors")
-    public @ResponseBody ColorWidthId[] getBasicColors() {
+    public ColorWidthId[] getBasicColors() {
 
         Color[] colors = Color.getBasicColors(situationsRepository.getSitCount());
         ColorWidthId[] colorWidthIds = new ColorWidthId[colors.length];
@@ -243,7 +240,7 @@ public class DBAPIController {
      * @return количество уникальных ситуаций в БД
      */
     @RequestMapping("/sitsList/count")
-    public @ResponseBody int getSitsCount(){
+    public int getSitsCount(){
         return situationsRepository.getSitCount();
     }
 }

@@ -48,7 +48,7 @@ function makeRequest(startdate, enddate, mode) {
         data: 'startDate='+ startdate + '&endDate='+enddate + '&mode=' + mode,
         async: true,
         success: function(msg) {
-            let cities = JSON.parse(msg);
+            let cities = msg;
             for(let i = 0; i < cities.length; i++) {
                 ShowCity(cities[i]['name'], cities[i]['color'], cities[i]['sits'])
             }
