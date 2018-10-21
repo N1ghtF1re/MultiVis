@@ -104,6 +104,7 @@ public class NominatimCommunication {
      * @return количество жителей региона
      */
     public long getPopulationFromNominatim(String region) {
+        region = region + ", Беларусь";
         region = region.replaceAll(" ", "%20");
 
         Map<String, String> additionalParams = new HashMap<>();
@@ -122,7 +123,13 @@ public class NominatimCommunication {
             JsonObject mainObject = (JsonObject) arr.get(0);
 
             JsonObject extratags = mainObject.getAsJsonObject("extratags");
-            return extratags.getAsJsonPrimitive("population").getAsLong();
+            if(extratags.getAsJsonPrimitive("population") != null) {
+                return extratags.getAsJsonPrimitive("population").getAsLong();
+            } else {
+                System.out.println(region);
+                return -1;
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

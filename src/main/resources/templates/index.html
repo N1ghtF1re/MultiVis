@@ -24,6 +24,11 @@
 <div id="menu">
     <a class="logo" href="#top">B<span>rakh</span>M<span>en</span></a>
     <div class="daterange-block">
+        Режим:
+        <select name="select-mode" id="select-mode">
+            <option selected="selected" value="basic">Базовый</option>
+            <option value="population">На основе демографии</option>
+        </select>
         Выбор диапазона:
         <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
         <button class="btn" id="update">Обновить!</button>
@@ -48,19 +53,23 @@
 <script>
     let sitsList;
     let basicColors;
-    let startDate = '';
-    let endDate = '';
+    let startDate = '2016-01-01';
+    let endDate = '2017-01-01';
     getSitsList();
     getBasicColors();
     ymaps.ready(function () {
-        makeRequest('2016-01-01', '2017-01-01') // Когда карта прогрузится, делаем первый запрос
+        makeRequest('2016-01-01', '2017-01-01', 'basic') // Когда карта прогрузится, делаем первый запрос
 
     });
     $('#update').click(function(){
         document.getElementById("load").style.display = "";
 
+        let select = document.getElementById("select-mode");
+        let mode = select.value;
+        console.log(mode);
+
         emergencyMap.geoObjects.removeAll();
-        makeRequest(startDate, endDate);
+        makeRequest(startDate, endDate, mode);
     });
 </script>
 

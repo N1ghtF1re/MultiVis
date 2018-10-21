@@ -173,3 +173,12 @@ input[id^="spoiler"]:checked + label + .spoiler{
 pre{
     margin: 0;
 }
+#select-mode {
+    height: 46px;
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: center;
+    font-family: "Arial";
+    border: 2px solid;
+    background: #fff;
+}

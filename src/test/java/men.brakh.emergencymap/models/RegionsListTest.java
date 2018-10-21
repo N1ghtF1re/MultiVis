@@ -1,6 +1,7 @@
 package men.brakh.emergencymap.models;
 
 import men.brakh.emergencymap.db.Emergencies;
+import men.brakh.emergencymap.models.maxArrCalculators.impl.BasicMaxArrCalculator;
 import org.junit.Test;
 
 import java.sql.Date;
@@ -48,7 +49,7 @@ public class RegionsListTest {
         emergencies.add(generateEmegrency(name3, 3));
 
 
-        RegionsList regions = new RegionsList(3, new Date(1), new Date(1), null) {
+        RegionsList regions = new RegionsList(3, new Date(1), new Date(1), "basic") {
             @Override
             List<Emergencies> getStaticsFromDB() {
                 return emergencies;
@@ -80,7 +81,7 @@ public class RegionsListTest {
     public void emptyListSituationsRepeatCalculationTest() {
         ArrayList<Emergencies> emergencies = new ArrayList<>();
 
-        RegionsList regions = new RegionsList(3, new Date(1), new Date(1), null) {
+        RegionsList regions = new RegionsList(3, new Date(1), new Date(1), "basic") {
             @Override
             List<Emergencies> getStaticsFromDB() {
                 return emergencies;
@@ -106,7 +107,7 @@ public class RegionsListTest {
         emergency.setSituation(1);
         emergencies.add(emergency);
 
-        RegionsList regions = new RegionsList(3, new Date(1), new Date(1), null) {
+        RegionsList regions = new RegionsList(3, new Date(1), new Date(1), "basic") {
             @Override
             List<Emergencies> getStaticsFromDB() {
                 return emergencies;
@@ -156,7 +157,7 @@ public class RegionsListTest {
             emergencies.add(generateEmegrency(name3, 2));
         }
 
-        RegionsList regions = new RegionsList(3, new Date(1), new Date(1), null) {
+        RegionsList regions = new RegionsList(3, new Date(1), new Date(1), "basic") {
             @Override
             List<Emergencies> getStaticsFromDB() {
                 return emergencies;
@@ -164,7 +165,8 @@ public class RegionsListTest {
         };
 
 
-        int[] maxArr = regions.getMaxArr();
+        int[] maxArr = ((BasicMaxArrCalculator)regions.getCoefficientsСalculators().getMaxArrCalculator().
+                calculate(regions.getList(), 3)).getMaxArr();
 
         int[] expectedMaxArr = new int[] {countOfMax1, countOfMax2, 0};
 

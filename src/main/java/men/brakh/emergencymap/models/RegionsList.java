@@ -2,8 +2,11 @@ package men.brakh.emergencymap.models;
 
 import men.brakh.emergencymap.db.Emergencies;
 import men.brakh.emergencymap.db.EmergenciesRepository;
-import men.brakh.emergencymap.models.сoefficientsСalculators.CoefficientsСalculators;
-import men.brakh.emergencymap.models.сoefficientsСalculators.impl.BasicCoefficientsСalculators;
+import men.brakh.emergencymap.db.PopulationsRepository;
+import men.brakh.emergencymap.models.сoefficientsСalculators.CoefCalcFactoryMethod;
+import men.brakh.emergencymap.models.сoefficientsСalculators.CoefficientsСalculator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -14,32 +17,51 @@ import java.util.List;
 /**
  * Класс со списом Регионов с их количеством повторений ситуаций и цветом
  */
+@Service
 public class RegionsList {
     private int n;
     private Date startDate;
     private Date endDate;
 
+    private String mode;
+
+    private CoefficientsСalculator coefficientsСalculators;
+
     ArrayList<Region> regionsList = new ArrayList<>();
 
-    private EmergenciesRepository emergenciesRepository;
+    private static EmergenciesRepository emergenciesRepository;
+    private static PopulationsRepository populationsRepository;
+
+
+    public RegionsList() {
+
+    }
 
     /**
      * Создание списка регионов
      * @param n Количество ситуаций
      * @param startDate Дата, с которой начинается поиск (в формате yyyy-MM-dd)
      * @param endDate Дата, на которой заканчивается поиск (в формате yyyy-MM-dd)
-     * @param emergenciesRepository Репозиторий БД
      */
-    public RegionsList(int n, Date startDate, Date endDate, EmergenciesRepository emergenciesRepository) {
+    public RegionsList(int n, Date startDate, Date endDate, String mode) {
         this.n = n;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.emergenciesRepository = emergenciesRepository;
+        this.mode = mode;
         // Заполняем список
         init();
         // Получаем цвета каждого региона
         initialiseColors();
     }
+    @Autowired
+    private void setPopulationRepository(PopulationsRepository populationsRepository) {
+        this.populationsRepository = populationsRepository;
+    }
+    @Autowired
+    private void setEmergenciesRepository(EmergenciesRepository emergenciesRepository) {
+        this.emergenciesRepository = emergenciesRepository;
+    }
+
 
     /**
      * Возвращаем результат запроса в БД, предварительно превратив из итератора в список
@@ -88,30 +110,6 @@ public class RegionsList {
         regionsList.add(currRegion); // Добавляем последний регион
     }
 
-    /**
-     * Получаем массив из максимальных повторений i-ой ситуации
-     * (i-1)-ый элемент - максимальное число повторений ситуации
-     * @return Массив из максимальных повторений i-ой ситуации
-     */
-    int[] getMaxArr() {
-        if (regionsList.size() == 0) {
-            return new int[n]; // Если список пустой, то число повторений каждой ситуации == 0
-        }
-
-        int[] maxArr = new int[n];
-        for (int i = 0; i < n; i++) { // Изначально инициализируем массив значениями первого региона
-            maxArr[i] = regionsList.get(0).getSitRepeats(i);
-        }
-
-        for (int i = 1; i < regionsList.size(); i++) {
-            for (int j = 0; j < n; j++) {
-                if (maxArr[j] < regionsList.get(i).getSitRepeats(j)) {
-                    maxArr[j] = regionsList.get(i).getSitRepeats(j);
-                }
-            }
-        }
-        return maxArr;
-    }
 
     /**
      * Получаем цвет определенного региона (Цвет i-го региона получается путем осветление его базового цвета на процент,
@@ -119,20 +117,18 @@ public class RegionsList {
      * @param region Объект региона
      * @param basicColors Базовые цвета ситуаций (при максимальном числе повторений ситуации)
      * @see Color#getBasicColors(int)
-     * @param maxArr - Массив максимальных значений повторений ситуаций
-     * @see RegionsList#getMaxArr()
      * @param coefficientsСalculators Объект для расчета коэффициента ответления цвета ситуации
-     * @see CoefficientsСalculators
+     * @see CoefficientsСalculator
      * @return Объект результирующего цвета
      */
-    public Color getRegionColor(Region region, Color[] basicColors, int[] maxArr, CoefficientsСalculators coefficientsСalculators) {
+    public Color getRegionColor(Region region, Color[] basicColors, CoefficientsСalculator coefficientsСalculators) {
         int[] regionSits = region.getSits();
 
         LinkedList<Color> colors= new LinkedList<>();
         for (int i = 0; i < n; i++) {
             if (regionSits[i] != 0) {
                 // Получаем коэффициент "осветления"
-                int coef = coefficientsСalculators.calc(region, maxArr, i);
+                int coef = coefficientsСalculators.calc(region, i);
                 // Осветляем коэффициент на coef% и заносим в список
                 colors.add(new Color(basicColors[i]).ligherColor(coef));
             }
@@ -152,16 +148,21 @@ public class RegionsList {
      * Получаем цвета для каждого региона
      */
     public void initialiseColors() {
-        int[] maxArr = getMaxArr(); // Получаем массив максимальных повторений ситуаций
+        // Создание фабрики для создания объекта, который будет вычислять коэффициент осветления.
+        // Внутри себя объект подсчета коэффициента создает объект подсчета массив максимального числа повторений
+        CoefCalcFactoryMethod coefCalcFactoryMethod = new CoefCalcFactoryMethod(regionsList, n);
+        coefficientsСalculators = coefCalcFactoryMethod.getCoefficientCalculator(mode);
+
         Color[] basicColors = Color.getBasicColors(n); // Получаем базовый цвета ситуаций
 
-        CoefficientsСalculators coefficientsСalculators = new BasicCoefficientsСalculators();
+
 
         for(int i = 0; i < regionsList.size(); i++) {
             Region currRegion = regionsList.get(i);
 
             // Получаем цвет конкретного региона:
-            String regionColor = getRegionColor(currRegion, basicColors, maxArr, coefficientsСalculators).getHex();
+            String regionColor = getRegionColor(currRegion, basicColors, coefficientsСalculators).getHex();
+
             // Устанавливаем цвет для этого региона
             currRegion.setColor(regionColor);
             regionsList.set(i, currRegion);
@@ -176,5 +177,8 @@ public class RegionsList {
         return regionsList;
     }
 
+    public CoefficientsСalculator getCoefficientsСalculators() {
+        return coefficientsСalculators;
+    }
 }
 
