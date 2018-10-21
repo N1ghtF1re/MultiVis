@@ -331,6 +331,48 @@
     </div>
 
 
+    <input type="checkbox" id="spoiler-population-get" />
+    <label for="spoiler-population-get" >Получение числа жителей определенного региона</label>
+    <div class="spoiler">
+        <table class="api-table">
+            <tr>
+                <th><b>Метод</b></th>
+                <th><b>HTTP запрос</b></th>
+                <th><b>Описание</b></th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>
+                    <span th:text="${host}" th:remove="tag">title</span>/api/population
+                    <br/>
+                    Параметры:
+                    <ul>
+                        <li><b>region</b> - название региона</li>
+                    </ul>
+                    <br/>
+                    Пример запроса:<br/>
+                    <a th:href="@{'/api/population'(region='Минский район')}">
+                        <span th:text="${host}" th:remove="tag">title</span>api/population?region=Минский район
+                    </a>
+
+
+                </td>
+                <td>HTTP запрос для получения количетства жителей определенного региона</td>
+            </tr>
+        </table>
+        <br/>
+        Для успешного выполнения запроса нужно обязательно передать параметр в URL.
+        <br/>
+        <br/>
+        <b>Пример ответа:</b>
+        <pre>
+            <code class="json">
+215404
+            </code>
+        </pre>
+    </div>
+
+
 </div>
 
 

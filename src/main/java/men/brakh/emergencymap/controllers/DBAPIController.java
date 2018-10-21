@@ -3,6 +3,7 @@ package men.brakh.emergencymap.controllers;
 import men.brakh.emergencymap.db.*;
 import men.brakh.emergencymap.http.NominatimCommunication;
 import men.brakh.emergencymap.models.Color;
+import men.brakh.emergencymap.models.Population;
 import men.brakh.emergencymap.models.Region;
 import men.brakh.emergencymap.models.RegionsList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,15 @@ public class DBAPIController {
         return regionsList.getList();
     }
 
+    /**
+     * Получение числа жителей в регионе
+     * @param region Регион
+     * @return число жителей в регионе
+     */
+    @RequestMapping(value="/population")
+    public long getRegionPopulation(@RequestParam String region) {
+        return Population.get(region);
+    }
 
     /**
      * Добавление элемента в базу данных по запросу на /api/add&region=REGION&situation=SITUATION&strDate=STRDATE
