@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface PopulationsRepository extends CrudRepository<Populations, Integer> {
 
-    public Populations findFirstByRegion(@Param("region") String region);
+    Populations findFirstByRegion(@Param("region") String region);
 
 
 }

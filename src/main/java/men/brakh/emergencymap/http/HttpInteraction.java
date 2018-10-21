@@ -13,6 +13,7 @@ public class HttpInteraction {
 
     private static final String USER_AGENT = "Mozilla/5.0";
 
+
     // HTTP GET request
     public String sendGet(String url) throws Exception {
 

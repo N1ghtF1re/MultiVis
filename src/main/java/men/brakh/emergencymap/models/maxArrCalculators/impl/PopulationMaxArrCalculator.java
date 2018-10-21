@@ -1,6 +1,5 @@
 package men.brakh.emergencymap.models.maxArrCalculators.impl;
 
-import men.brakh.emergencymap.http.NominatimCommunication;
 import men.brakh.emergencymap.models.Population;
 import men.brakh.emergencymap.models.Region;
 import men.brakh.emergencymap.models.maxArrCalculators.MaxArrCalculator;
@@ -22,8 +21,6 @@ public class PopulationMaxArrCalculator implements MaxArrCalculator {
             return this;
         }
 
-        // Ищем число жителей в регионе:
-        NominatimCommunication nominatimCommunication = new NominatimCommunication();
 
         long population; // Количество жителей;
 

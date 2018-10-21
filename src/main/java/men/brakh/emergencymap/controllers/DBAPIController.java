@@ -6,6 +6,8 @@ import men.brakh.emergencymap.models.Color;
 import men.brakh.emergencymap.models.Population;
 import men.brakh.emergencymap.models.Region;
 import men.brakh.emergencymap.models.RegionsList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +38,7 @@ public class DBAPIController {
     @Autowired
     private PopulationsRepository populationsRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(DBAPIController.class);
 
     final SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -51,13 +54,15 @@ public class DBAPIController {
     public List<Region> getRegionsList(@RequestParam String startDate,
                                        @RequestParam String endDate,
                                        @RequestParam(defaultValue = "basic") String mode) {
+        logger.info(String.format("Request to /regionList with params: %s, %s, %s", startDate, endDate, mode));
         java.util.Date start;
         java.util.Date end;
         try {
             start = sdf1.parse(startDate);
             end = sdf1.parse(endDate);
         } catch (ParseException e) {
-            return new ArrayList<Region>();
+            logger.warn("Invalid date entered " + e.getMessage());
+            return new ArrayList<>();
         }
         java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
         java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
@@ -74,6 +79,7 @@ public class DBAPIController {
      */
     @RequestMapping(value="/population")
     public long getRegionPopulation(@RequestParam String region) {
+        logger.info(String.format("Request to /population with params:%s", region));
         return Population.get(region);
     }
 
@@ -114,6 +120,7 @@ public class DBAPIController {
      */
     @RequestMapping(value="/accidents", params={})
     public Iterable<Emergencies> getAllAccidents() {
+        logger.info(String.format("Request to /accidents with params: - "));
         return emergenciesRepository.findAll();
     }
 
@@ -124,6 +131,7 @@ public class DBAPIController {
      */
     @RequestMapping(value="/accidents", params={"region"})
     public Iterable<Emergencies> getByRegion(@RequestParam String region) {
+        logger.info(String.format("Request to /accidents with params: %s ", region));
         Iterable<Emergencies> emergencies = emergenciesRepository.findByRegion(region);
         for(Emergencies emergency : emergencies) {
             System.out.println(emergency.getRegion());
@@ -143,13 +151,15 @@ public class DBAPIController {
      */
     @RequestMapping(value="/accidents", params={"startDate", "endDate"})
     public Iterable<Emergencies> getByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+        logger.info(String.format("Request to /accidents with params: %s, %s", startDate, endDate));
         java.util.Date start = null;
         java.util.Date end = null;
         try {
             start = sdf1.parse(startDate);
             end = sdf1.parse(endDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.warn("Invalid date entered " + e.getMessage());
+            return null;
         }
         java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
         java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
@@ -169,11 +179,14 @@ public class DBAPIController {
         java.util.Date start = null;
         java.util.Date end = null;
 
+        logger.info(String.format("Request to /accidents with params: %s, %s %s", startDate, endDate, region));
+
         try {
             start = sdf1.parse(startDate);
             end = sdf1.parse(endDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.warn("Invalid  date entered " + e.getMessage());
+            return null;
         }
         java.sql.Date sqlStartDate = new java.sql.Date(start.getTime());
         java.sql.Date sqlEndDate = new java.sql.Date(end.getTime());
@@ -187,6 +200,8 @@ public class DBAPIController {
      */
     @RequestMapping("/sitsList")
     public Iterable<Situations> getSitsList() {
+        logger.info(String.format("Request to /sitsList"));
+
         return situationsRepository.findAll();
     }
 
@@ -241,6 +256,7 @@ public class DBAPIController {
         n.setPolygon(coords);
 
         polygonsRepository.save(n);
+        logger.info(String.format("Added new row in table 'polygons'. Region: %s", region));
 
         return coords;
     }

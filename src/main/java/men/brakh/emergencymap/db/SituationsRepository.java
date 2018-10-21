@@ -9,5 +9,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface SituationsRepository extends CrudRepository<Situations, Integer> {
 
     @Query("SELECT COUNT(e) FROM Situations e")
-    public int getSitCount();
+    int getSitCount();
 }

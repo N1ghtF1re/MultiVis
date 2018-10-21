@@ -1,5 +1,7 @@
 package men.brakh.emergencymap.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MainController {
-  
+  private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-  @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST} )
+  @RequestMapping(value = "/", method = {RequestMethod.GET} )
   public ModelAndView index(){
-
+    logger.info("Request to /");
     ModelAndView modelAndView = new ModelAndView("index");
 
     return modelAndView;

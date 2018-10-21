@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import men.brakh.emergencymap.configuration.PropertiesReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -21,13 +23,15 @@ public class NominatimCommunication {
 
     private final static String propertiesFile = "nominatim.properties";
 
+    private final static Logger logger = LoggerFactory.getLogger(NominatimCommunication.class);
+
     public NominatimCommunication() {
         PropertiesReader propertiesReader = new PropertiesReader(propertiesFile);
         try {
             host = propertiesReader.read("host");
             key = propertiesReader.read("key");
         } catch (IOException e) {
-            new RuntimeException(e);
+            logger.error("Error reading file with properties for working with Nominatim api");
         }
         httpInteraction = new HttpInteraction();
     }
@@ -52,7 +56,6 @@ public class NominatimCommunication {
             url.append(urlParam);
         }
 
-        System.out.println(url);
         return url.toString();
 
 
@@ -71,6 +74,8 @@ public class NominatimCommunication {
         additionalParams.put("polygon_geojson", "1");
         additionalParams.put("q", region);
         String strurl = formationRequest(additionalParams);
+
+        logger.info("[GETTING COORDS] Request sent to third party server: " + strurl);
 
         try {
             String result = httpInteraction.sendGet(strurl);
@@ -93,9 +98,11 @@ public class NominatimCommunication {
                 }
             }
         }  catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while processing the request for receiving coordinates" , e);
         }
-        return null;
+
+        logger.error("Entered bad region : " + region);
+        throw new InvalidParameterException("Bad region :(");
     }
 
     /**
@@ -113,6 +120,7 @@ public class NominatimCommunication {
         additionalParams.put("extratags", "1");
 
         String strurl = formationRequest(additionalParams);
+        logger.info("[GETTING POPULATION] Request sent to third party server: " + strurl);
 
         try {
             String result = httpInteraction.sendGet(strurl);
@@ -126,15 +134,17 @@ public class NominatimCommunication {
             if(extratags.getAsJsonPrimitive("population") != null) {
                 return extratags.getAsJsonPrimitive("population").getAsLong();
             } else {
+                logger.error("Nomination has no data on the population of " + region +". This region is set to -1");
                 System.out.println(region);
                 return -1;
             }
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while processing the request for receiving population" , e);
         }
 
+        logger.error("Entered bad region : " + region);
         throw new InvalidParameterException("Bad region :(");
     }
 

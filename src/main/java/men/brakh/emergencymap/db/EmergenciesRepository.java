@@ -13,15 +13,15 @@ public interface EmergenciesRepository extends CrudRepository<Emergencies, Integ
 
     // ПОИСК ПО РЕГИОНУ
     @Query("SELECT e FROM Emergencies e where e.region = :region")
-    public Iterable<Emergencies> findByRegion(@Param("region") String title);
+    Iterable<Emergencies> findByRegion(@Param("region") String title);
 
     // ПОИСК ПО ДИАПАЗОНУ ДАТ
     @Query("SELECT e FROM Emergencies e where date > :startDate AND date < :endDate ORDER BY region")
-    public Iterable<Emergencies> findByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    Iterable<Emergencies> findByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
     // ПОИСК ПО ДИАПАЗОНУ ДАТ + РЕГИОНОВ
     @Query("SELECT e FROM Emergencies e where date > :startDate AND date < :endDate AND e.region = :region")
-    public Iterable<Emergencies> findByDateRangeAndRegion(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("region") String region);
+    Iterable<Emergencies> findByDateRangeAndRegion(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("region") String region);
 
 
 }

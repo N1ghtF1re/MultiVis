@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface PolygonsRepository extends CrudRepository<Polygons, Integer> {
 
-    public Polygons findFirstByRegion(@Param("region") String region);
+    Polygons findFirstByRegion(@Param("region") String region);
 
 
 }
