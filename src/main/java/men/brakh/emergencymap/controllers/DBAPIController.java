@@ -1,7 +1,8 @@
 package men.brakh.emergencymap.controllers;
 
+import men.brakh.emergencymap.BeansConfiguration;
 import men.brakh.emergencymap.db.*;
-import men.brakh.emergencymap.http.NominatimCommunication;
+import men.brakh.emergencymap.http.APICommunication;
 import men.brakh.emergencymap.models.Color;
 import men.brakh.emergencymap.models.Population;
 import men.brakh.emergencymap.models.Region;
@@ -9,6 +10,8 @@ import men.brakh.emergencymap.models.RegionsList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -248,8 +251,10 @@ public class DBAPIController {
         if(polygons != null) {
             return polygons.getPolygon();
         }
-        NominatimCommunication nominatimCommunication = new NominatimCommunication();
-        String coords = nominatimCommunication.getCoordsFromNominatim(region);
+
+        ApplicationContext context = new AnnotationConfigApplicationContext(BeansConfiguration.class);
+        APICommunication apiCommunication = (APICommunication) context.getBean("apiBean");
+        String coords = apiCommunication.getCoords(region);
 
         Polygons n = new Polygons();
         n.setRegion(region);

@@ -23,5 +23,4 @@ public interface EmergenciesRepository extends CrudRepository<Emergencies, Integ
     @Query("SELECT e FROM Emergencies e where date > :startDate AND date < :endDate AND e.region = :region")
     Iterable<Emergencies> findByDateRangeAndRegion(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("region") String region);
 
-
 }
