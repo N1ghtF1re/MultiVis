@@ -166,7 +166,7 @@ public class RegionsListTest {
 
 
         int[] maxArr = ((BasicMaxArrCalculator)regions.getCoefficientsСalculators().getMaxArrCalculator().
-                calculate(regions.getList(), 3)).getMaxArr();
+                calc(regions.getList(), 3)).getMaxArr();
 
         int[] expectedMaxArr = new int[] {countOfMax1, countOfMax2, 0};
 

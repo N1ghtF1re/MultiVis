@@ -5,5 +5,5 @@ import men.brakh.emergencymap.models.Region;
 import java.util.List;
 
 public interface MaxArrCalculator {
-    MaxArrCalculator calculate(List<Region> regionsList, int n);
+    MaxArrCalculator calc(List<Region> regionsList, int n);
 }

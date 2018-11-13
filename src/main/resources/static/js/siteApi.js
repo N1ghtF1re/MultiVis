@@ -4,7 +4,7 @@
 function getSitsList() {
     $.ajax({
         url: "/api/sitsList",
-        type: 'POST',
+        type: 'GET',
         async: false,
         success: function(msg) {
             sitsList = msg
@@ -29,7 +29,7 @@ function getPolygon(region) {
 function getBasicColors() {
     $.ajax({
         url: "/api/basicColors",
-        type: 'POST',
+        type: 'GET',
         async: false,
         success: function(msg) {
             basicColors = msg
@@ -44,7 +44,7 @@ function getSitName(index) {
 function makeRequest(startdate, enddate, mode) {
     $.ajax({
         url: "/api/regionsList",
-        type: 'POST',
+        type: 'GET',
         data: 'startDate='+ startdate + '&endDate='+enddate + '&mode=' + mode,
         async: true,
         success: function(msg) {

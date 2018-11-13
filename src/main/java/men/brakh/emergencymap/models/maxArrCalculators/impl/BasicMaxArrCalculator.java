@@ -14,7 +14,7 @@ public class BasicMaxArrCalculator implements MaxArrCalculator {
      * @return Массив из максимальных повторений i-ой ситуации
      */
     @Override
-    public MaxArrCalculator calculate(List<Region> regionsList, int n) {
+    public MaxArrCalculator calc(List<Region> regionsList, int n) {
         if (regionsList.size() == 0) {
             maxArr = new int[n];
             return this;

@@ -64,7 +64,7 @@ public class Region {
     }
 
 
-    public Boolean equals(Region region1, Region region2) {
-        return(region1.getName().equals(region2.getName()));
+    public Boolean equals(Region region) {
+        return(this.getName().equals(region.getName()));
     }
 }

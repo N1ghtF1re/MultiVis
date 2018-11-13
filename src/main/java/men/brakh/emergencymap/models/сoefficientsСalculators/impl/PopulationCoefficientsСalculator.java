@@ -12,7 +12,7 @@ public class PopulationCoefficientsСalculator implements CoefficientsСalculato
     private MaxArrCalculator maxArrCalculator;
 
     public PopulationCoefficientsСalculator(List<Region> regionList, int n) {
-        maxArrCalculator = new PopulationMaxArrCalculator().calculate(regionList, n);
+        maxArrCalculator = new PopulationMaxArrCalculator().calc(regionList, n);
     }
 
     @Override
@@ -26,6 +26,6 @@ public class PopulationCoefficientsСalculator implements CoefficientsСalculato
 
     @Override
     public MaxArrCalculator getMaxArrCalculator() {
-        return null;
+        return maxArrCalculator;
     }
 }

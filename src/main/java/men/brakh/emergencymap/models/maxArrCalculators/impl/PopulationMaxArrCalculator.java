@@ -15,7 +15,7 @@ public class PopulationMaxArrCalculator implements MaxArrCalculator {
      * @return Массив из максимальных повторений i-ой ситуации, деленный на число жителей региона
      */
     @Override
-    public MaxArrCalculator calculate(List<Region> regionsList, final int n) {
+    public MaxArrCalculator calc(List<Region> regionsList, final int n) {
         if (regionsList.size() == 0) {
             maxArr = new double[n];
             return this;

@@ -14,7 +14,7 @@ public class BasicCoefficientsСalculator implements CoefficientsСalculator {
     MaxArrCalculator maxArrCalculator;
 
     public BasicCoefficientsСalculator(List<Region> regionList, int n) {
-        maxArrCalculator = new BasicMaxArrCalculator().calculate(regionList, n);
+        maxArrCalculator = new BasicMaxArrCalculator().calc(regionList, n);
     }
 
     @Override
