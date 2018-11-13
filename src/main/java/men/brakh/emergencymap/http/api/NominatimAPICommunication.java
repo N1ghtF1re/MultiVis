@@ -1,12 +1,15 @@
-package men.brakh.emergencymap.http;
+package men.brakh.emergencymap.http.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import men.brakh.emergencymap.configuration.PropertiesReader;
+import men.brakh.emergencymap.http.APICommunication;
+import men.brakh.emergencymap.http.HttpInteraction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -16,16 +19,17 @@ import java.util.Map;
 /**
  * Класс для "Общения" с апи Nominatim
  */
-public class NominatimCommunication {
+@Component
+public class NominatimAPICommunication implements APICommunication {
     private String host;
     private String key;
     private HttpInteraction httpInteraction;
 
     private final static String propertiesFile = "nominatim.properties";
 
-    private final static Logger logger = LoggerFactory.getLogger(NominatimCommunication.class);
+    private final static Logger logger = LoggerFactory.getLogger(NominatimAPICommunication.class);
 
-    public NominatimCommunication() {
+    public NominatimAPICommunication() {
         PropertiesReader propertiesReader = new PropertiesReader(propertiesFile);
         try {
             host = propertiesReader.read("host");
@@ -67,7 +71,7 @@ public class NominatimCommunication {
      * @param region название региона
      * @return полигон региона
      */
-    public String getCoordsFromNominatim(String region) {
+    public String getCoords(String region) {
         region = region.replaceAll(" ", "%20");
 
         Map<String, String> additionalParams = new HashMap<>();
@@ -110,7 +114,7 @@ public class NominatimCommunication {
      * @param region Название региона
      * @return количество жителей региона
      */
-    public long getPopulationFromNominatim(String region) {
+    public long getPopulation(String region) {
         region = region + ", Беларусь";
         region = region.replaceAll(" ", "%20");
 
