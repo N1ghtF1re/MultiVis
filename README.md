@@ -1,5 +1,5 @@
 <h1 align="center">MultiVis</h1>
-<p align="center"><img width=200 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR71KvKNruneM3CMZ0k5tNZkOq0zeDySHsd6vCBGT-LnHL6oDL7?raw=true" style="width: 150px;"></p>
+<p align="center"><img width=200 src="https://png2.kisspng.com/20180404/zxe/kisspng-computer-icons-web-hosting-service-web-content-cloud-computing-5ac4e289564a65.8544772215228524893535.png?raw=true" style="width: 150px;"></p>
 
 <p align="center">
 <a href="https://github.com/N1ghtF1re/MultiVis/stargazers"><img src="https://img.shields.io/github/stars/N1ghtF1re/MultiVis.svg" alt="Stars"></a>
