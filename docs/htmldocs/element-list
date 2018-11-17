@@ -1,0 +1,12 @@
+men.brakh.emergencymap
+men.brakh.emergencymap.configuration
+men.brakh.emergencymap.controllers
+men.brakh.emergencymap.db
+men.brakh.emergencymap.dto
+men.brakh.emergencymap.http
+men.brakh.emergencymap.http.api
+men.brakh.emergencymap.models
+men.brakh.emergencymap.models.maxArrCalculators
+men.brakh.emergencymap.models.maxArrCalculators.impl
+men.brakh.emergencymap.models.сoefficientsСalculators
+men.brakh.emergencymap.models.сoefficientsСalculators.impl
