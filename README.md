@@ -25,13 +25,13 @@ For correct operation of this software, a server of the following minimum config
 In addition: the presence in the operating system of the installed MySQL DBMS, the JRE virtual machine and the tool for building maven.
 Before the server is “deployed”, it is necessary to configure the database. To do this, you need to load a “dump” of an empty database located in database / dump.sql. You can do this with the following command:
 ```
-mysql -u имя_пользователя -p -h имя_сервера_БД имя_базы < database/dump.sql
+mysql -u USERNAME -p -h SERVER_NAME DB_NAME < database/dump.sql
 ```
 
 After that, you need to fill in the main table with data statistics, after which you need to specify the data from the database user in the application src / main / resources / application.properties configuration file by setting the following properties:
-+ spring.datasource.username
-+ spring.datasource.password
-Optionally, you can configure the port on which the server will work by adding the server.port = PORT property.
++ `spring.datasource.username`
++ `spring.datasource.password`
+Optionally, you can configure the port on which the server will work by adding the `server.port = PORT property`.
 After configuration settings, just run the mvn build command in the project directory and the maven tool will collect the jar with the built-in tomcat server in the target folder. The last step is to run this file with the command.
 ```
 java –jar target / FILE_NAME.jar
