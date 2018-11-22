@@ -23,9 +23,9 @@ For correct operation of this software, a server of the following minimum config
 + HDD: 1 GB of free space.
 
 In addition: the presence in the operating system of the installed MySQL DBMS, the JRE virtual machine and the tool for building maven.
-Before the server is “deployed”, it is necessary to configure the database. To do this, you need to load a “dump” of an empty database located in database / dump.sql. You can do this with the following command:
+Before the server is “deployed”, it is necessary to configure the database. To do this, you need to load a “dump” of an empty database located in dump.sql. You can do this with the following command:
 ```
-mysql -u USERNAME -p -h SERVER_NAME DB_NAME < database/dump.sql
+mysql -u USERNAME -p -h SERVER_NAME DB_NAME < dump.sql
 ```
 
 After that, you need to fill in the main table with data statistics, after which you need to specify the data from the database user in the application src / main / resources / application.properties configuration file by setting the following properties:
