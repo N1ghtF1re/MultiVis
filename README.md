@@ -31,6 +31,8 @@ mysql -u USERNAME -p -h SERVER_NAME DB_NAME < database/dump.sql
 After that, you need to fill in the main table with data statistics, after which you need to specify the data from the database user in the application src / main / resources / application.properties configuration file by setting the following properties:
 + `spring.datasource.username`
 + `spring.datasource.password`
+
+
 Optionally, you can configure the port on which the server will work by adding the `server.port = PORT property`.
 After configuration settings, just run the mvn build command in the project directory and the maven tool will collect the jar with the built-in tomcat server in the target folder. The last step is to run this file with the command.
 ```
